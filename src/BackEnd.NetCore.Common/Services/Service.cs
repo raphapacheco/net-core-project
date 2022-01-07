@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using System;
 using Microsoft.EntityFrameworkCore;
 using BackEnd.NetCore.Common.Repositories;
+using FluentValidation;
 
 namespace BackEnd.NetCore.Common.Services
 {
@@ -26,21 +27,21 @@ namespace BackEnd.NetCore.Common.Services
         {
             if (!modelo.Valido(out var resultadoValidacao))
             {
-                throw new Exception($"Modelo inválido: {string.Join("\n\n", resultadoValidacao)}");
+                throw new ValidationException("Modelo inválido", resultadoValidacao.Errors);
             }
 
-            var identificador = await _repositorio.InsertAsync(modelo);
+            var id = await _repositorio.InsertAsync(modelo);
 
             _repositorio.Commit();
 
-            return identificador;
+            return id;
         }
 
         public virtual async Task AtualizarAsync(TModelo modelo)
         {
             if (!modelo.Valido(out var resultadoValidacao))
             {
-                throw new Exception($"Modelo inválido: {string.Join("\n\n", resultadoValidacao)}");
+                throw new ValidationException("Modelo inválido", resultadoValidacao.Errors);                
             }
 
             await _repositorio.UpdateAsync(modelo);

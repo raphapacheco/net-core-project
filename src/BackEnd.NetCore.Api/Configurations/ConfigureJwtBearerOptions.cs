@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using BackEnd.NetCore.Api.Models;
+using BackEnd.NetCore.Common.Utils;
 
 namespace BackEnd.NetCore.Api.Configurations
 {
@@ -26,7 +27,7 @@ namespace BackEnd.NetCore.Api.Configurations
             options.TokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(_configuracaoToken.Value.GetSecretAsByteArray()),
+                IssuerSigningKey = new SymmetricSecurityKey(Secret.GetSecretAsByteArray()),
                 ValidateIssuer = false,
                 ValidateAudience = false,
                 ValidateLifetime = true,

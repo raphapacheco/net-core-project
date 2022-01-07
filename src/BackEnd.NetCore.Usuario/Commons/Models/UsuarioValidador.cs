@@ -9,51 +9,51 @@ namespace BackEnd.NetCore.Usuario.Commons.Models
         {
             RuleFor(x => x.Nome)
                 .NotEmpty()
-                .WithMessage(ValidationMessage.NotEmpty("Nome"));
+                .WithMessage(ValidationMessage.NOT_EMPTY);
 
             RuleFor(x => x.Nome)
                 .MaximumLength(50)
-                .WithMessage(ValidationMessage.MaximumLength("Nome", 50));
+                .WithMessage(ValidationMessage.MaximumLength(50));
 
             RuleFor(x => x.Login)
                 .NotEmpty()
-                .WithMessage(ValidationMessage.NotEmpty("Login"));
+                .WithMessage(ValidationMessage.NOT_EMPTY);
 
             RuleFor(x => x.Login)
                 .MaximumLength(20)
-                .WithMessage(ValidationMessage.MaximumLength("Login", 20));
+                .WithMessage(ValidationMessage.MaximumLength(20));
 
             RuleFor(x => x.Email)
                 .NotEmpty()
-                .WithMessage(ValidationMessage.NotEmpty("Email"));
+                .WithMessage(ValidationMessage.NOT_EMPTY);
 
             RuleFor(x => x.Email)
                 .MaximumLength(50)
-                .WithMessage(ValidationMessage.MaximumLength("Email", 50));
+                .WithMessage(ValidationMessage.MaximumLength( 50));
 
             RuleFor(x => x.Senha)
                 .NotEmpty()
-                .WithMessage(ValidationMessage.NotEmpty("Senha"));
+                .WithMessage(ValidationMessage.NOT_EMPTY);
 
             RuleFor(x => x.Senha)
                 .MaximumLength(50)
-                .WithMessage(ValidationMessage.MaximumLength("Senha", 50));
+                .WithMessage(ValidationMessage.MaximumLength(50));
 
             RuleFor(x => x.CPF)
                 .MaximumLength(14)
-                .WithMessage(ValidationMessage.MaximumLength("CPF", 14));
+                .WithMessage(ValidationMessage.MaximumLength(14));
 
             RuleFor(x => x.CNPJ)
                 .MaximumLength(18)
-                .WithMessage(ValidationMessage.MaximumLength("CNPJ", 18));
+                .WithMessage(ValidationMessage.MaximumLength(18));
 
             RuleFor(x => x.Celular)
                 .NotEmpty()
-                .WithMessage(ValidationMessage.NotEmpty("Celular"));
+                .WithMessage(ValidationMessage.NOT_EMPTY);
 
             RuleFor(x => x.Celular)
                 .MaximumLength(17)
-                .WithMessage(ValidationMessage.MaximumLength("Celular", 17));
+                .WithMessage(ValidationMessage.MaximumLength(17));
         }
     }
 }

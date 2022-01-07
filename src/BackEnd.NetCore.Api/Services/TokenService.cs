@@ -35,7 +35,7 @@ namespace BackEnd.NetCore.Api.Services
                           new Claim("IpAddress", usuario.IP)
                      }),
                 Expires = DateTime.UtcNow.AddHours(_configuration.Value.ExpiresIn),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(_configuration.Value.GetSecretAsByteArray()), SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Secret.GetSecretAsByteArray()), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
@@ -51,7 +51,7 @@ namespace BackEnd.NetCore.Api.Services
             var tokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(_configuration.Value.GetSecretAsByteArray()),
+                IssuerSigningKey = new SymmetricSecurityKey(Secret.GetSecretAsByteArray()),
                 ValidateIssuer = false,
                 ValidateAudience = false,
                 ValidateLifetime = false
@@ -85,12 +85,12 @@ namespace BackEnd.NetCore.Api.Services
                 DataCriacao = DateTime.UtcNow
             };
 
-            return TripleDes.Encrypt(_configuration.Value.GetSecretAsByteArray(), JsonSerializer.Serialize(informacoesRefreshToken));
+            return TripleDes.Encrypt(Secret.GetSecretAsByteArray(), JsonSerializer.Serialize(informacoesRefreshToken));
         }
 
         public bool ValidarRefreshToken(string refreshToken, UsuarioToken usuario)
         {
-            RefreshTokenInf informacoesRefreshToken = JsonSerializer.Deserialize<RefreshTokenInf>(TripleDes.Decrypt(_configuration.Value.GetSecretAsByteArray(), refreshToken));
+            RefreshTokenInf informacoesRefreshToken = JsonSerializer.Deserialize<RefreshTokenInf>(TripleDes.Decrypt(Secret.GetSecretAsByteArray(), refreshToken));
 
             return informacoesRefreshToken.Identificador.Equals(usuario.Identificador) &&
                    informacoesRefreshToken.Nome.ToUpper().Equals(usuario.Nome.ToUpper()) &&
@@ -99,7 +99,7 @@ namespace BackEnd.NetCore.Api.Services
 
         public bool RefreshTokenExpirado(string refreshToken)
         {
-            RefreshTokenInf informacoesRefreshToken = JsonSerializer.Deserialize<RefreshTokenInf>(TripleDes.Decrypt(_configuration.Value.GetSecretAsByteArray(), refreshToken));
+            RefreshTokenInf informacoesRefreshToken = JsonSerializer.Deserialize<RefreshTokenInf>(TripleDes.Decrypt(Secret.GetSecretAsByteArray(), refreshToken));
             return informacoesRefreshToken.DataCriacao.AddHours(_configuration.Value.ExpiresIn * 2) < DateTime.UtcNow;
         }
     }

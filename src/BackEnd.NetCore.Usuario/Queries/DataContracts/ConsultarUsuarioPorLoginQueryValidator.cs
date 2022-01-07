@@ -9,7 +9,11 @@ namespace BackEnd.NetCore.Usuario.Queries.DataContracts
         {
             RuleFor(x => x.Login)
                 .NotEmpty()
-                .WithMessage(ValidationMessage.NotEmpty("Login"));
+                .WithMessage(ValidationMessage.NOT_EMPTY);
+
+            RuleFor(x => x.Login)
+                .NotNull()
+                .WithMessage(ValidationMessage.NOT_NULL);
         }
     }
 }

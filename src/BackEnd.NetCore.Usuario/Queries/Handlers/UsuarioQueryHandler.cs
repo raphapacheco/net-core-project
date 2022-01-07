@@ -3,6 +3,7 @@ using BackEnd.NetCore.Usuario.Commons.Contexts;
 using BackEnd.NetCore.Usuario.Commons.Models;
 using BackEnd.NetCore.Usuario.Queries.DataContracts;
 using BackEnd.NetCore.Usuario.Queries.Parsers;
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -27,7 +28,7 @@ namespace BackEnd.NetCore.Usuario.Queries.Handlers
         {
             if (!query.Valido(out var resultadoValidacao))
             {
-                throw new Exception($"Query inválida: { string.Join("\n\n", resultadoValidacao)}");
+                throw new ValidationException("Query inválida", resultadoValidacao.Errors);
             }
 
             var consulta = await _repositorio.GetByExpressionAsync(x => x.Login.Equals(query.Login.ToUpper()));
@@ -41,7 +42,7 @@ namespace BackEnd.NetCore.Usuario.Queries.Handlers
         {
             if (!query.Valido(out var resultadoValidacao))
             {
-                throw new Exception($"Query inválida: { string.Join("\n\n", resultadoValidacao)}");
+                throw new ValidationException("Query inválida", resultadoValidacao.Errors);
             }
 
             var consulta = await _repositorio.GetByIdAsync(query.Id);

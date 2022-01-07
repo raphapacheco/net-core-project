@@ -1,10 +1,10 @@
-﻿using BackEnd.NetCore.Api.Models;
+﻿using BackEnd.NetCore.Common.Utils;
 using BackEnd.NetCore.Usuario.Commands.DataContracts;
 using BackEnd.NetCore.Usuario.Queries.DataContracts;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using System;
 using System.Threading.Tasks;
 
@@ -26,14 +26,35 @@ namespace BackEnd.NetCore.Api.Controllers
         [Authorize]
         public async Task<IActionResult> Get([FromQuery] int id)
         {
-            return Ok(await _mediator.Send(new ConsultarUsuarioPorIdQuery() { Id = id }));
+            try
+            {
+                var usuario = await _mediator.Send(new ConsultarUsuarioPorIdQuery() { Id = id });
+
+                if (usuario == null)
+                {
+                    return NotFound("Usuário não encontrado");
+                }
+
+                return Ok(usuario);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }            
         }
 
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Post([FromBody] InserirUsuarioCommand command)
         {
-            return Ok(await _mediator.Send(command));
+            try
+            {
+                return Ok(await _mediator.Send(command));
+            }
+            catch (ValidationException e)
+            {
+                return BadRequest(new ErrorMessage(e.Message, e.Errors));
+            }            
         }
     }
 }

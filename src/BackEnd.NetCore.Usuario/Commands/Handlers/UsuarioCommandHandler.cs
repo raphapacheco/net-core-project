@@ -4,6 +4,7 @@ using BackEnd.NetCore.Usuario.Commands.DataContracts;
 using BackEnd.NetCore.Usuario.Commands.Parsers;
 using BackEnd.NetCore.Usuario.Commons.Contexts;
 using BackEnd.NetCore.Usuario.Commons.Models;
+using FluentValidation;
 using MediatR;
 using System;
 using System.Threading;
@@ -24,7 +25,7 @@ namespace BackEnd.NetCore.Usuario.Commands.Handlers
         {
             if (!command.Valido(out var resultadoValidacao))
             {
-                throw new Exception($"Command inválido: { string.Join("\n\n", resultadoValidacao)}");
+                throw new ValidationException("Command inválido", resultadoValidacao.Errors);
             }
 
            var id = await _servico.InserirAsync(UsuarioCommandParser.ConverterParaModelo(command));

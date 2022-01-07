@@ -36,7 +36,7 @@ namespace BackEnd.NetCore.Api.Controllers
         [AllowAnonymous]
         public string Ping([FromQuery] string request)
         {            
-            return "pong " + TripleDes.Encrypt(_configurationToken.Value.GetSecretAsByteArray(), request);
+            return "pong " + TripleDes.Encrypt(Secret.GetSecretAsByteArray(), request);
         }
         
         /// <summary>Requisição do Token de acesso</summary>
