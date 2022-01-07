@@ -1,4 +1,5 @@
 ﻿using BackEnd.NetCore.Common.Repositories;
+using BackEnd.NetCore.Usuario.Commons.Contexts;
 using BackEnd.NetCore.Usuario.Commons.Models;
 using BackEnd.NetCore.Usuario.Queries.DataContracts;
 using BackEnd.NetCore.Usuario.Queries.Parsers;
@@ -15,7 +16,7 @@ namespace BackEnd.NetCore.Usuario.Queries.Handlers
     {
         protected readonly Repository<UsuarioDAO> _repositorio;
 
-        public UsuarioQueryHandler(DbContext context)
+        public UsuarioQueryHandler(UsuarioContext context)
         {
             _repositorio = new Repository<UsuarioDAO>(context);
         }
