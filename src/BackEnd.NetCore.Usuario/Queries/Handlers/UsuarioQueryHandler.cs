@@ -16,9 +16,9 @@ namespace BackEnd.NetCore.Usuario.Queries.Handlers
     {
         protected readonly Repository<UsuarioDAO> _repositorio;
 
-        public UsuarioQueryHandler(UsuarioContext context)
+        public UsuarioQueryHandler(UsuarioContext contexto)
         {
-            _repositorio = new Repository<UsuarioDAO>(context);
+            _repositorio = new Repository<UsuarioDAO>(contexto);
         }
 
         public async Task<ConsultarUsuarioQueryResponse> Handle(ConsultarUsuarioQuery query, CancellationToken cancellationToken)
@@ -32,7 +32,7 @@ namespace BackEnd.NetCore.Usuario.Queries.Handlers
 
             var usuario = consulta.ToList().FirstOrDefault();
             
-            return UsuarioParser.ConverterParaResponse(usuario);
+            return UsuarioQueryParser.ConverterParaResponse(usuario);
         }
     }
 }

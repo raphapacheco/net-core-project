@@ -12,6 +12,7 @@ namespace BackEnd.NetCore.Usuario.Commons.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder
+                .HasDefaultSchema("backend_netcore")
                 .ApplyConfiguration(new UsuarioMap());                    
 
             base.OnModelCreating(modelBuilder);

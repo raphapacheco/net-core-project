@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BackEnd.NetCore.Common.Repositories
 {
-    public class Repository<TEntidade> where TEntidade : Entidade
+    public class Repository<TModelo> where TModelo : Model
     {
         protected readonly DbContext Context;
 
@@ -22,47 +22,47 @@ namespace BackEnd.NetCore.Common.Repositories
 
         public virtual async Task DeleteAsync(int id, int? commandTimeout)
         {
-            var entidade = await GetByIdAsync(id, commandTimeout);
+            var modelo = await GetByIdAsync(id, commandTimeout);
 
             Context.Database.SetCommandTimeout(commandTimeout);
-            Context.Set<TEntidade>().Remove(entidade);
+            Context.Set<TModelo>().Remove(modelo);
         }
         
-        public Task<TEntidade> GetByIdAsync(int id)
+        public Task<TModelo> GetByIdAsync(int id)
         {
             return GetByIdAsync(id, null);
         }
 
-        public virtual Task<TEntidade> GetByIdAsync(int id, int? commandTimeout)
+        public virtual Task<TModelo> GetByIdAsync(int id, int? commandTimeout)
         {
             Context.Database.SetCommandTimeout(commandTimeout);
-            return Context.Set<TEntidade>().FindAsync(id).AsTask();
+            return Context.Set<TModelo>().FindAsync(id).AsTask();
         }      
 
-        public Task<int> InsertAsync(TEntidade item)
+        public Task<int> InsertAsync(TModelo item)
         {
             return InsertAsync(item, null);
         }
 
-        public virtual async Task<int> InsertAsync(TEntidade item, int? commandTimeout)
+        public virtual async Task<int> InsertAsync(TModelo item, int? commandTimeout)
         {
             Context.Database.SetCommandTimeout(commandTimeout);
-            await Context.Set<TEntidade>().AddAsync(item);
+            await Context.Set<TModelo>().AddAsync(item);
             return item.Id;
         }
 
-        public virtual void Update(TEntidade item, int? commandTimeout)
+        public virtual void Update(TModelo item, int? commandTimeout)
         {
             Context.Database.SetCommandTimeout(commandTimeout);
-            Context.Set<TEntidade>().Update(item);
+            Context.Set<TModelo>().Update(item);
         }
 
-        public Task UpdateAsync(TEntidade item)
+        public Task UpdateAsync(TModelo item)
         {
             return UpdateAsync(item, null);
         }
 
-        public Task UpdateAsync(TEntidade item, int? commandTimeout)
+        public Task UpdateAsync(TModelo item, int? commandTimeout)
         {
             return Task.Run(() => Update(item, commandTimeout));
         }
@@ -72,47 +72,47 @@ namespace BackEnd.NetCore.Common.Repositories
             return Context.SaveChanges() > 0;
         }
 
-        public virtual IEnumerable<TEntidade> GetByExpression(Expression<System.Func<TEntidade, bool>> expression)
+        public virtual IEnumerable<TModelo> GetByExpression(Expression<System.Func<TModelo, bool>> expression)
         {
             return GetByExpression(expression, null);
         }
 
-        public IEnumerable<TEntidade> GetByExpression(Expression<System.Func<TEntidade, bool>> expression, int? commandTimeout)
+        public IEnumerable<TModelo> GetByExpression(Expression<System.Func<TModelo, bool>> expression, int? commandTimeout)
         {
             Context.Database.SetCommandTimeout(commandTimeout);
-            return Context.Set<TEntidade>().Where(expression).ToList();
+            return Context.Set<TModelo>().Where(expression).ToList();
         }
 
-        public Task<IEnumerable<TEntidade>> GetByExpressionAsync(Expression<System.Func<TEntidade, bool>> expression)
+        public Task<IEnumerable<TModelo>> GetByExpressionAsync(Expression<System.Func<TModelo, bool>> expression)
         {
             return GetByExpressionAsync(expression, null);
         }
 
-        public Task<IEnumerable<TEntidade>> GetByExpressionAsync(Expression<System.Func<TEntidade, bool>> expression, int? commandTimeout)
+        public Task<IEnumerable<TModelo>> GetByExpressionAsync(Expression<System.Func<TModelo, bool>> expression, int? commandTimeout)
         {
             return Task.Run(() => GetByExpression(expression, commandTimeout));
         }
 
         /*
-        public virtual PaginationResponse<TEntidade, TIdentificador> GetAll(Pagination pagination)
+        public virtual PaginationResponse<TModelo, TIdentificador> GetAll(Pagination pagination)
         {
             return GetAll(pagination, null);
         }
 
-        public PaginationResponse<TEntidade, TIdentificador> GetAll(Pagination pagination, int? commandTimeout)
+        public PaginationResponse<TModelo, TIdentificador> GetAll(Pagination pagination, int? commandTimeout)
         {
             Context.Database.SetCommandTimeout(commandTimeout);
-            var resultado = Context.Set<TEntidade>().Skip(pagination.Skip).Take(pagination.Size).ToList();
+            var resultado = Context.Set<TModelo>().Skip(pagination.Skip).Take(pagination.Size).ToList();
 
-            return new PaginationResponse<TEntidade, TIdentificador>(resultado, pagination.Page);
+            return new PaginationResponse<TModelo, TIdentificador>(resultado, pagination.Page);
         }
 
-        public Task<PaginationResponse<TEntidade, TIdentificador>> GetAllAsync(Pagination pagination)
+        public Task<PaginationResponse<TModelo, TIdentificador>> GetAllAsync(Pagination pagination)
         {
             return GetAllAsync(pagination, null);
         }
 
-        public Task<PaginationResponse<TEntidade, TIdentificador>> GetAllAsync(Pagination pagination, int? commandTimeout)
+        public Task<PaginationResponse<TModelo, TIdentificador>> GetAllAsync(Pagination pagination, int? commandTimeout)
         {
             return Task.Run(() => GetAll(pagination, commandTimeout));
         }

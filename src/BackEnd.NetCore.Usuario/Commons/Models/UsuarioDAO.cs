@@ -4,7 +4,7 @@ using System;
 
 namespace BackEnd.NetCore.Usuario.Commons.Models
 {
-    public class UsuarioDAO : Entidade
+    public class UsuarioDAO : Model
     {        
         public string Nome { get; set; }
         public string Login { get; set; }

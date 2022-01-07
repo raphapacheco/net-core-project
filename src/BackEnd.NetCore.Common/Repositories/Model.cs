@@ -2,7 +2,7 @@
 
 namespace BackEnd.NetCore.Common.Repositories
 {
-    public abstract class Entidade
+    public abstract class Model
     {
         public int Id { get; set; }
 

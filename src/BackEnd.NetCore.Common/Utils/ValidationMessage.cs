@@ -8,6 +8,7 @@ namespace BackEnd.NetCore.Common.Utils
         private const string NOT_EMPTY = "O campo não pode estar vazio: {0}.";
         private const string NOT_NULL = "O campo não pode ser nulo: {0}.";
         private const string REQUIRED = "Campo obrigatório: {0}.";
+        private const string INVALID = "Campo inválido: {0}.";
         private const string ENUM_CONVERTION_FAILED = "Não foi possível converter o campo {0}. Valores aceitos: {1}.";       
         private const string MAXIMUM_LENGTH = "O tamanho máximo para o campo {0} é {1}.";                    
 
@@ -24,6 +25,11 @@ namespace BackEnd.NetCore.Common.Utils
         public static string Required(string field)
         {
             return string.Format(REQUIRED, field);
+        }
+        
+        public static string Invalid(string field)
+        {
+            return string.Format(INVALID, field);
         }
 
         public static string EnumConvertionFailed(string field, string acceptedValues)

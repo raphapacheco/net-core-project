@@ -34,9 +34,9 @@ namespace BackEnd.NetCore.Api.Controllers
         [HttpGet]
         [Route("ping")]
         [AllowAnonymous]
-        public string Ping()
+        public string Ping([FromQuery] string request)
         {            
-            return "pong " + TripleDes.Encrypt(_configurationToken.Value.GetSecretAsByteArray(), "123456"); ;
+            return "pong " + TripleDes.Encrypt(_configurationToken.Value.GetSecretAsByteArray(), request); ;
         }
         
         /// <summary>Requisição do Token de acesso</summary>
@@ -52,10 +52,9 @@ namespace BackEnd.NetCore.Api.Controllers
         {
             try
             {
-                var usuario = await _mediator.Send(new ConsultarUsuarioQuery() { Login = request.Nome });
-                var senhaCriptografada = TripleDes.Encrypt(_configurationToken.Value.GetSecretAsByteArray(), request.Senha);
-
-                if (usuario == null || string.IsNullOrEmpty(usuario.Senha) || senhaCriptografada.Equals(usuario.Senha))
+                var usuario = await _mediator.Send(new ConsultarUsuarioQuery() { Login = request.Nome.ToUpper() });                
+               
+                if (string.IsNullOrEmpty(usuario?.Senha) || !request.Senha.Equals(usuario.Senha))
                     return BadRequest(new { mensagem = "Usuário ou senha inválidos" });
 
                 var usuarioToken = new UsuarioToken()
@@ -70,12 +69,14 @@ namespace BackEnd.NetCore.Api.Controllers
                 var accessToken = _tokenService.GerarToken(usuarioToken);
                 var refreshToken = _tokenService.GerarRefreshToken(usuarioToken);
 
-                return new TokenResponse()
-                {
-                    AccessToken = accessToken.Token,
-                    ExpiresIn = accessToken.ExpiresIn,
-                    RefreshToken = refreshToken
-                };
+               var token = new TokenResponse()
+               {
+                   AccessToken = accessToken.Token,
+                   ExpiresIn = accessToken.ExpiresIn,
+                   RefreshToken = refreshToken
+               };
+
+                return Ok(token);
             }
             catch (Exception ex)
             {
@@ -121,12 +122,14 @@ namespace BackEnd.NetCore.Api.Controllers
                 var accessToken = _tokenService.GerarToken(usuario);
                 var refreshToken = _tokenService.GerarRefreshToken(usuario);
 
-                return new TokenResponse()
+                var token = new TokenResponse()
                 {
                     AccessToken = accessToken.Token,
                     ExpiresIn = accessToken.ExpiresIn,
                     RefreshToken = refreshToken
                 };
+
+                return Ok(token);         
             }
             catch (Exception ex)
             {
