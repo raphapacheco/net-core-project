@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace BackEnd.NetCore.Usuario.Queries.DataContracts
 {
-    public class ConsultarUsuarioQueryValidator : AbstractValidator<ConsultarUsuarioQuery>
+    public class ConsultarUsuarioPorLoginQueryValidator : AbstractValidator<ConsultarUsuarioPorLoginQuery>
     {
-        public ConsultarUsuarioQueryValidator()
+        public ConsultarUsuarioPorLoginQueryValidator()
         {
             RuleFor(x => x.Login)
                 .NotEmpty()

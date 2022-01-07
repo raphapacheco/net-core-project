@@ -37,7 +37,8 @@ namespace BackEnd.NetCore.Usuario.Common.Maps
                 .HasColumnName("celular");
 
             builder.Property(x => x.DataCadastro)
-                .HasColumnName("datacadastro");
+                .HasColumnName("datacadastro")
+                .ValueGeneratedOnAdd();
 
             builder.Property(x => x.Ativo)
                 .HasColumnName("ativo");

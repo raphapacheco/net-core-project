@@ -1,6 +1,5 @@
 ﻿using BackEnd.NetCore.Usuario.Commons.Models;
 using BackEnd.NetCore.Usuario.Queries.DataContracts;
-using System;
 
 namespace BackEnd.NetCore.Usuario.Queries.Parsers
 {

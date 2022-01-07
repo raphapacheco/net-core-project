@@ -36,7 +36,7 @@ namespace BackEnd.NetCore.Api.Controllers
         [AllowAnonymous]
         public string Ping([FromQuery] string request)
         {            
-            return "pong " + TripleDes.Encrypt(_configurationToken.Value.GetSecretAsByteArray(), request); ;
+            return "pong " + TripleDes.Encrypt(_configurationToken.Value.GetSecretAsByteArray(), request);
         }
         
         /// <summary>Requisição do Token de acesso</summary>
@@ -52,9 +52,10 @@ namespace BackEnd.NetCore.Api.Controllers
         {
             try
             {
-                var usuario = await _mediator.Send(new ConsultarUsuarioQuery() { Login = request.Nome.ToUpper() });                
-               
-                if (string.IsNullOrEmpty(usuario?.Senha) || !request.Senha.Equals(usuario.Senha))
+                var usuario = await _mediator.Send(new ConsultarUsuarioPorLoginQuery() { Login = request.Nome.ToUpper() });
+                var senhaCriptografada = TripleDes.Encrypt(Secret.GetSecretAsByteArray(), request.Senha);
+
+                if (string.IsNullOrEmpty(usuario?.Senha) || !senhaCriptografada.Equals(usuario.Senha))
                     return BadRequest(new { mensagem = "Usuário ou senha inválidos" });
 
                 var usuarioToken = new UsuarioToken()

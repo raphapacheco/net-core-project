@@ -12,7 +12,9 @@ using System.Threading.Tasks;
 
 namespace BackEnd.NetCore.Usuario.Queries.Handlers
 {
-    public class UsuarioQueryHandler : IRequestHandler<ConsultarUsuarioQuery, ConsultarUsuarioQueryResponse>
+    public class UsuarioQueryHandler :
+        IRequestHandler<ConsultarUsuarioPorLoginQuery, ConsultarUsuarioQueryResponse>,
+        IRequestHandler<ConsultarUsuarioPorIdQuery, ConsultarUsuarioQueryResponse>        
     {
         protected readonly Repository<UsuarioDAO> _repositorio;
 
@@ -21,18 +23,30 @@ namespace BackEnd.NetCore.Usuario.Queries.Handlers
             _repositorio = new Repository<UsuarioDAO>(contexto);
         }
 
-        public async Task<ConsultarUsuarioQueryResponse> Handle(ConsultarUsuarioQuery query, CancellationToken cancellationToken)
+        public async Task<ConsultarUsuarioQueryResponse> Handle(ConsultarUsuarioPorLoginQuery query, CancellationToken cancellationToken)
         {
             if (!query.Valido(out var resultadoValidacao))
             {
                 throw new Exception($"Query inválida: { string.Join("\n\n", resultadoValidacao)}");
             }
 
-            var consulta = await _repositorio.GetByExpressionAsync(x => x.Login.Equals(query.Login));
+            var consulta = await _repositorio.GetByExpressionAsync(x => x.Login.Equals(query.Login.ToUpper()));
 
             var usuario = consulta.ToList().FirstOrDefault();
             
             return UsuarioQueryParser.ConverterParaResponse(usuario);
+        }
+
+        public async Task<ConsultarUsuarioQueryResponse> Handle(ConsultarUsuarioPorIdQuery query, CancellationToken cancellationToken)
+        {
+            if (!query.Valido(out var resultadoValidacao))
+            {
+                throw new Exception($"Query inválida: { string.Join("\n\n", resultadoValidacao)}");
+            }
+
+            var consulta = await _repositorio.GetByIdAsync(query.Id);
+
+            return UsuarioQueryParser.ConverterParaResponse(consulta);
         }
     }
 }
