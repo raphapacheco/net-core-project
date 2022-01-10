@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BackEnd.NetCore.Api.Controllers
@@ -65,7 +66,7 @@ namespace BackEnd.NetCore.Api.Controllers
             {
                 var usuarios = await _mediator.Send(new ConsultarPaginadoUsuarioQuery() { Pagina = pagina, Tamanho = tamanho});
 
-                if (usuarios == null)
+                if (usuarios == null || usuarios.Itens.Count().Equals(0))
                 {
                     return NotFound("Nenhum Usuário encontrado");
                 }
