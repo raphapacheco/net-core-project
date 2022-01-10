@@ -5,6 +5,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using BackEnd.NetCore.Common.Repositories;
 using FluentValidation;
+using BackEnd.NetCore.Common.ValueObjects;
 
 namespace BackEnd.NetCore.Common.Services
 {
@@ -64,10 +65,10 @@ namespace BackEnd.NetCore.Common.Services
             return await _repositorio.GetByExpressionAsync(expression);
         }
 
-        //public virtual async Task<PaginationResponse<TModelo, TIdentificador>> ConsultarTodosAsync(Pagination pagination)
-        //{
-        //    return await _repositorio.GetAllAsync(pagination);
-        //}
+        public virtual async Task<PaginationResponse<TModelo>> ConsultarTodosAsync(Pagination pagination)
+        {
+            return await _repositorio.GetAllAsync(pagination);
+        }
     }
 }
 

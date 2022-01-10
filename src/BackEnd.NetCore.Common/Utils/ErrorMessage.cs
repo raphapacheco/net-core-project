@@ -1,4 +1,5 @@
-﻿using FluentValidation.Results;
+﻿using FluentValidation;
+using FluentValidation.Results;
 using System.Collections.Generic;
 
 namespace BackEnd.NetCore.Common.Utils
@@ -9,14 +10,14 @@ namespace BackEnd.NetCore.Common.Utils
         public string Mensagem { get; }
         public IEnumerable<Error> Erros => _erros;
         
-        public ErrorMessage(string menssgem, IEnumerable<ValidationFailure> validationFailures)
+        public ErrorMessage(ValidationException exception)
         {
-            Mensagem = menssgem;
+            Mensagem = exception.Message;
             _erros = new List<Error>();
 
-            foreach (var failure in validationFailures)
+            foreach (var error in exception.Errors)
             {
-                _erros.Add(new Error(failure));
+                _erros.Add(new Error(error));
             }
         }        
     }

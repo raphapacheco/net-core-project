@@ -1,5 +1,8 @@
-﻿using BackEnd.NetCore.Usuario.Commons.Models;
+﻿using BackEnd.NetCore.Common.DataContracts;
+using BackEnd.NetCore.Common.ValueObjects;
+using BackEnd.NetCore.Usuario.Commons.Models;
 using BackEnd.NetCore.Usuario.Queries.DataContracts;
+using System.Collections.Generic;
 
 namespace BackEnd.NetCore.Usuario.Queries.Parsers
 {
@@ -24,6 +27,22 @@ namespace BackEnd.NetCore.Usuario.Queries.Parsers
                 Ativo = usuario.Ativo,
                 Bloqueado = usuario.Bloqueado
             };
-        }
+        }       
+
+        public static ConsultarPaginadoUsuarioResponse ConverterParaConsultarPaginadoResponse(PaginationResponse<UsuarioDAO> paginationResponse)
+        {
+            var itens = new List<ConsultarUsuarioQueryResponse>();
+
+            foreach (var entidade in paginationResponse.Items)
+            {
+                itens.Add(ConverterParaResponse(entidade));
+            }
+
+            return new ConsultarPaginadoUsuarioResponse()
+            {
+                Pagina = paginationResponse.Page,
+                Itens = itens
+            };
+        }        
     }
 }

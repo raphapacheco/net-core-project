@@ -1,11 +1,11 @@
 ﻿using BackEnd.NetCore.Common.Utils;
 using FluentValidation;
 
-namespace BackEnd.NetCore.Usuario.Queries.DataContracts
-{ 
-    public class ConsultarUsuarioPorIdQueryValidator : AbstractValidator<ConsultarUsuarioPorIdQuery>
+namespace BackEnd.NetCore.Common.DataContracts
+{
+    public class ConsultarPorIdQueryBaseValidator<TResponse> : AbstractValidator<ConsultarPorIdQueryBase<TResponse>>
     {
-        public ConsultarUsuarioPorIdQueryValidator()
+        public ConsultarPorIdQueryBaseValidator()
         {
             RuleFor(x => x.Id)
                 .NotEmpty()
@@ -15,5 +15,6 @@ namespace BackEnd.NetCore.Usuario.Queries.DataContracts
                 .NotNull()
                 .WithMessage(ValidationMessage.NOT_NULL);
         }
+
     }
 }

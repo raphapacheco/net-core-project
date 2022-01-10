@@ -22,9 +22,9 @@ namespace BackEnd.NetCore.Api.Controllers
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
         
-        [HttpGet]
+        [HttpGet("{id}")]
         [Authorize]
-        public async Task<IActionResult> Get([FromQuery] int id)
+        public async Task<IActionResult> Get(int id)
         {
             try
             {
@@ -53,8 +53,29 @@ namespace BackEnd.NetCore.Api.Controllers
             }
             catch (ValidationException e)
             {
-                return BadRequest(new ErrorMessage(e.Message, e.Errors));
+                return BadRequest(new ErrorMessage(e));
             }            
+        }
+
+        [HttpGet()]
+        [Authorize]
+        public async Task<IActionResult> GetAll([FromQuery(Name = "pagina")] int pagina, [FromQuery(Name = "tamanho")] int tamanho)
+        {
+            try
+            {
+                var usuarios = await _mediator.Send(new ConsultarPaginadoUsuarioQuery() { Pagina = pagina, Tamanho = tamanho});
+
+                if (usuarios == null)
+                {
+                    return NotFound("Nenhum Usuário encontrado");
+                }
+
+                return Ok(usuarios);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
     }
 }
