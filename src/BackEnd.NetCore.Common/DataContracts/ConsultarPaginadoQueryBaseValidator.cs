@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace BackEnd.NetCore.Common.DataContracts
 {
-    public class ConsultarPaginadoQueryBaseValidator<TConsultarResponse> : AbstractValidator<ConsultarPaginadoQueryBase<TConsultarResponse>>
+    internal class ConsultarPaginadoQueryBaseValidator<TConsultarResponse> : AbstractValidator<ConsultarPaginadoQueryBase<TConsultarResponse>>
     {
         public ConsultarPaginadoQueryBaseValidator()
         {

@@ -3,10 +3,14 @@ using FluentValidation;
 
 namespace BackEnd.NetCore.Usuario.Commands.DataContracts
 {
-    internal class InserirUsuarioCommandValidator : AbstractValidator<InserirUsuarioCommand>
+    internal class AtualizarUsuarioCommandValidator : AbstractValidator<AtualizarUsuarioCommand>
     {
-        public InserirUsuarioCommandValidator()
+        public AtualizarUsuarioCommandValidator()
         {
+            RuleFor(x => x.Id)
+                .NotNull()
+                .WithMessage(ValidationMessage.NOT_NULL);
+
             RuleFor(x => x.Nome)
                 .NotNull()
                 .WithMessage(ValidationMessage.NOT_NULL);

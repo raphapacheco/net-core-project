@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace BackEnd.NetCore.Usuario.Queries.Parsers
 {
-    public static class UsuarioQueryParser
+    internal static class UsuarioQueryParser
     {
         public static ConsultarUsuarioQueryResponse ConverterParaResponse(UsuarioDAO usuario)
         {

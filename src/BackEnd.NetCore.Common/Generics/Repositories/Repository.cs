@@ -1,11 +1,12 @@
-﻿using BackEnd.NetCore.Common.ValueObjects;
+﻿using BackEnd.NetCore.Common.Models;
+using BackEnd.NetCore.Common.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace BackEnd.NetCore.Common.Repositories
+namespace BackEnd.NetCore.Common.Generics.Repositories
 {
     public class Repository<TModelo> where TModelo : Model
     {

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BackEnd.NetCore.Usuario.Common.Maps
 {
-    public class UsuarioMap : IEntityTypeConfiguration<UsuarioDAO>
+    internal class UsuarioMap : IEntityTypeConfiguration<UsuarioDAO>
     {
         public void Configure(EntityTypeBuilder<UsuarioDAO> builder)
         {            

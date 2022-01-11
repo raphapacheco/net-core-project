@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System;
 using Microsoft.EntityFrameworkCore;
-using BackEnd.NetCore.Common.Repositories;
+using BackEnd.NetCore.Common.Generics.Repositories;
 using FluentValidation;
 using BackEnd.NetCore.Common.ValueObjects;
+using BackEnd.NetCore.Common.Models;
 
-namespace BackEnd.NetCore.Common.Services
+namespace BackEnd.NetCore.Common.Generics.Services
 {
     public class Service<TModelo>
         where TModelo : Model

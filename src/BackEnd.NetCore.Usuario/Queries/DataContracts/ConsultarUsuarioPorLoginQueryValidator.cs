@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace BackEnd.NetCore.Usuario.Queries.DataContracts
 {
-    public class ConsultarUsuarioPorLoginQueryValidator : AbstractValidator<ConsultarUsuarioPorLoginQuery>
+    internal class ConsultarUsuarioPorLoginQueryValidator : AbstractValidator<ConsultarUsuarioPorLoginQuery>
     {
         public ConsultarUsuarioPorLoginQueryValidator()
         {

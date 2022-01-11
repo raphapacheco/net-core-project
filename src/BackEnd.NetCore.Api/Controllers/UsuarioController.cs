@@ -78,6 +78,41 @@ namespace BackEnd.NetCore.Api.Controllers
                 return BadRequest(e.Message);
             }
         }
+
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult> Put([FromBody] AtualizarUsuarioCommand command)
+        {
+            try
+            {
+                return Ok(await _mediator.Send(command));
+            }
+            catch (ValidationException e)
+            {
+                return BadRequest(new ErrorMessage(e));
+            }
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                var retorno = await _mediator.Send(new ExcluirUsuarioCommand() { Id = id });
+
+                if (retorno == null)
+                {
+                    return NotFound("Usuário não encontrado");
+                }
+
+                return Ok(retorno);
+            }
+            catch (ValidationException e)
+            {
+                return BadRequest(new ErrorMessage(e));
+            }
+        }
     }
 }
 

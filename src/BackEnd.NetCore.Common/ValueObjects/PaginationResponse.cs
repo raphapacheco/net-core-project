@@ -1,4 +1,4 @@
-﻿using BackEnd.NetCore.Common.Repositories;
+﻿using BackEnd.NetCore.Common.Models;
 using System.Collections.Generic;
 
 namespace BackEnd.NetCore.Common.ValueObjects

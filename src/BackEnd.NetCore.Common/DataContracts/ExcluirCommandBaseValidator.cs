@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace BackEnd.NetCore.Common.DataContracts
 {
-    internal class ConsultarPorIdQueryBaseValidator<TResponse> : AbstractValidator<ConsultarPorIdQueryBase<TResponse>>
+    internal class ExcluirCommandBaseValidator : AbstractValidator<ExcluirCommandBase>
     {
-        public ConsultarPorIdQueryBaseValidator()
+        public ExcluirCommandBaseValidator()
         {
             RuleFor(x => x.Id)
                 .NotEmpty()

@@ -1,6 +1,6 @@
 ﻿using FluentValidation.Results;
 
-namespace BackEnd.NetCore.Common.Repositories
+namespace BackEnd.NetCore.Common.Models
 {
     public abstract class Model
     {

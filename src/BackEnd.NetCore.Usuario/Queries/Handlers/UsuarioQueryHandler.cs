@@ -1,5 +1,4 @@
-﻿using BackEnd.NetCore.Common.DataContracts;
-using BackEnd.NetCore.Common.Repositories;
+﻿using BackEnd.NetCore.Common.Generics.Repositories;
 using BackEnd.NetCore.Common.ValueObjects;
 using BackEnd.NetCore.Usuario.Commons.Contexts;
 using BackEnd.NetCore.Usuario.Commons.Models;
