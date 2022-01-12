@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BackEnd.NetCore.Api</name>
+    </assembly>
+    <members>
+        <member name="M:BackEnd.NetCore.Api.Controllers.AutenticacaoController.Autenticar(BackEnd.NetCore.Common.DataContracts.AutenticacaoRequest)">
+            <summary>Requisição do Token de acesso</summary>
+            <remarks>Neste endpoint é possível solicitar o token de acesso.</remarks>        
+            <param name="request"></param>                
+            <returns></returns>
+            <response code="200">{ "accessToken", "refreshToken", "expiresIn", "tokenType" }</response>
+            <response code="400">{ "mensagem": "Usuário ou senha inválidos" }</response>
+        </member>
+    </members>
+</doc>
