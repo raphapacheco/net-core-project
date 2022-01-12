@@ -18,15 +18,11 @@ namespace BackEnd.NetCore.Api.Controllers
     [Route("auth")]
     public class AutenticacaoController : ControllerBase
     {
-        private readonly IConfiguration _configuration;
-        private readonly IOptions<ConfiguracaoToken> _configurationToken;
         private readonly ITokenService _tokenService;
         private readonly IMediator _mediator;
 
-        public AutenticacaoController(IConfiguration configuration, IOptions<ConfiguracaoToken> configurationToken, ITokenService tokenService, IMediator mediator)
+        public AutenticacaoController(ITokenService tokenService, IMediator mediator)
         {
-            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            _configurationToken = configurationToken ?? throw new ArgumentNullException(nameof(configurationToken));
             _tokenService = tokenService ?? throw new ArgumentNullException(nameof(tokenService));
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
@@ -34,9 +30,9 @@ namespace BackEnd.NetCore.Api.Controllers
         [HttpGet]
         [Route("ping")]
         [AllowAnonymous]
-        public string Ping([FromQuery] string request)
+        public string Ping()
         {            
-            return "pong " + TripleDes.Encrypt(Secret.GetSecretAsByteArray(), request);
+            return "pong ";
         }
         
         /// <summary>Requisição do Token de acesso</summary>
@@ -60,7 +56,7 @@ namespace BackEnd.NetCore.Api.Controllers
 
                 var usuarioToken = new UsuarioToken()
                 {
-                    Identificador = usuario.Id.ToString(),
+                    Id = usuario.Id.ToString(),
                     Nome = usuario.Nome,
                     Login = usuario.Login,
                     Email = usuario.Email,
@@ -81,7 +77,7 @@ namespace BackEnd.NetCore.Api.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -134,7 +130,7 @@ namespace BackEnd.NetCore.Api.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                return BadRequest(ex.Message);
             }
         }
 

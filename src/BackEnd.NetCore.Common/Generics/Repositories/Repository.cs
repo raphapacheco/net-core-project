@@ -53,20 +53,24 @@ namespace BackEnd.NetCore.Common.Generics.Repositories
             return item.Id;
         }
 
-        public virtual void Update(TModelo item, int? commandTimeout)
-        {
-            Context.Database.SetCommandTimeout(commandTimeout);
-            Context.Set<TModelo>().Update(item);
-        }
-
         public Task UpdateAsync(TModelo item)
         {
             return UpdateAsync(item, null);
         }
 
-        public Task UpdateAsync(TModelo item, int? commandTimeout)
+        public virtual async Task<int> UpdateAsync(TModelo item, int? commandTimeout)
         {
-            return Task.Run(() => Update(item, commandTimeout));
+            Context.Database.SetCommandTimeout(commandTimeout);
+            var model = await Context.FindAsync<TModelo>(item.Id);
+
+            if (model == null)
+            {
+                Context.Set<TModelo>().Update(item);
+                return item.Id;
+            }
+
+            Context.Entry(model).CurrentValues.SetValues(item);
+            return item.Id;
         }       
 
         public Task<IEnumerable<TModelo>> GetByExpressionAsync(Expression<System.Func<TModelo, bool>> expression)

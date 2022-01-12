@@ -35,7 +35,7 @@ namespace BackEnd.NetCore.Usuario.Commands.Handlers
            return new ResponseBase() 
            { 
                Id = id,
-               Mensagem = "Usuario inserido com sucesso"
+               Mensagem = "Usuário inserido com sucesso"
            };
         }
 
@@ -58,7 +58,7 @@ namespace BackEnd.NetCore.Usuario.Commands.Handlers
             return new ResponseBase() 
             { 
                 Id = command.Id,                
-                Mensagem = "Usuario excluído com sucesso"
+                Mensagem = "Usuário excluído com sucesso"
             };
         }
 

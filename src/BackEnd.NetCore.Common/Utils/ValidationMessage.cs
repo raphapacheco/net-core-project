@@ -13,7 +13,6 @@ namespace BackEnd.NetCore.Common.Utils
         public const string REQUIRED = "Obrigatório";
         public const string INVALID = "Inválido";
                            
-
         public static string EnumConvertionFailed(string acceptedValues)
         {
             return string.Format(ENUM_CONVERTION_FAILED, acceptedValues);

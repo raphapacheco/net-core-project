@@ -28,7 +28,7 @@ namespace BackEnd.NetCore.Api.Services
             {
                 Subject = new ClaimsIdentity(new Claim[]
                      {
-                          new Claim(ClaimTypes.NameIdentifier, usuario.Identificador),
+                          new Claim(ClaimTypes.NameIdentifier, usuario.Id),
                           new Claim(ClaimTypes.Name, usuario.Login),
                           new Claim("Nome", usuario.Nome),
                           new Claim("Email", usuario.Email),
@@ -65,7 +65,7 @@ namespace BackEnd.NetCore.Api.Services
 
             return new UsuarioToken()
             {
-                Identificador = principal.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value,
+                Id = principal.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value,
                 Login = principal.Identity.Name,
                 Nome = principal.Claims.FirstOrDefault(x => x.Type == "Nome")?.Value,
                 Email = principal.Claims.FirstOrDefault(x => x.Type == "Email")?.Value,
@@ -77,7 +77,7 @@ namespace BackEnd.NetCore.Api.Services
         {
             var informacoesRefreshToken = new RefreshTokenInf
             {
-                Identificador = usuario.Identificador,
+                Identificador = usuario.Id,
                 Nome = usuario.Nome,
                 Login = usuario.Login,
                 Email = usuario.Email,
@@ -92,7 +92,7 @@ namespace BackEnd.NetCore.Api.Services
         {
             RefreshTokenInf informacoesRefreshToken = JsonSerializer.Deserialize<RefreshTokenInf>(TripleDes.Decrypt(Secret.GetSecretAsByteArray(), refreshToken));
 
-            return informacoesRefreshToken.Identificador.Equals(usuario.Identificador) &&
+            return informacoesRefreshToken.Identificador.Equals(usuario.Id) &&
                    informacoesRefreshToken.Nome.ToUpper().Equals(usuario.Nome.ToUpper()) &&
                    informacoesRefreshToken.IP.ToUpper().Equals(usuario.IP.ToUpper());
         }

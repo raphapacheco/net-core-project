@@ -32,11 +32,11 @@ namespace BackEnd.NetCore.Common.Generics.Services
                 throw new ValidationException("Modelo inválido", resultadoValidacao.Errors);
             }
 
-            var id = await _repositorio.InsertAsync(modelo);
+            await _repositorio.InsertAsync(modelo);
 
             _repositorio.Commit();
 
-            return id;
+            return modelo.Id;
         }
 
         public virtual async Task AtualizarAsync(TModelo modelo)
