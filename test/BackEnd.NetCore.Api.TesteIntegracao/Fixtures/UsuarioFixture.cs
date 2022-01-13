@@ -17,7 +17,7 @@ namespace BackEnd.NetCore.Api.TesteIntegracao.Fixtures
                 Email = "test@company.com",
                 Senha = "pass123",
                 CPF = "333.333.333-33",
-                CNPJ = "92.115.984/0001-74",                
+                CNPJ = "92.115.984/0001-74",
                 Celular = "+55(21)93333-3333"
             };
 
@@ -39,6 +39,16 @@ namespace BackEnd.NetCore.Api.TesteIntegracao.Fixtures
             };
 
             return new StringContent(JsonConvert.SerializeObject(command), Encoding.UTF8, "application/json");
+        }
+
+        public StringContent GerarPutUsuarioInvalido()
+        {
+            return new StringContent(JsonConvert.SerializeObject(new AtualizarUsuarioCommand()), Encoding.UTF8, "application/json");
+        }
+        
+        public StringContent GerarPostUsuarioInvalido()
+        {
+            return new StringContent(JsonConvert.SerializeObject(new InserirUsuarioCommand()), Encoding.UTF8, "application/json");
         }
     }
 }

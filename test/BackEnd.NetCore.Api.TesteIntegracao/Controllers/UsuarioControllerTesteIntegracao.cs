@@ -6,7 +6,6 @@ using Xunit;
 using FluentAssertions;
 using BackEnd.NetCore.Api.TesteIntegracao.Extensions;
 using BackEnd.NetCore.Api.TesteIntegracao.Abstractions;
-using BackEnd.NetCore.Api;
 using BackEnd.NetCore.Api.TesteIntegracao.Fixtures;
 using BackEnd.NetCore.Usuario.Queries.DataContracts;
 using BackEnd.NetCore.Common.DataContracts;
@@ -149,6 +148,66 @@ namespace BackEnd.NetCore.Api.TesteIntegracao.Controllers
 
             getResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);           
             resultado.Should().Be("Nenhum usuário encontrado");
+        }
+
+        [Fact(DisplayName = "Deve retornar BadRequest quando efetuado com query inválida")]
+        public async Task Deve_retornar_bad_request_quando_efetuado_get_com_query_invalida()
+        {
+            await _client.Autenticar();
+
+            var getResponse = await _client.GetAsync(ENDPOINT + 0);
+            var getResult = getResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+
+            getResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+            getResult.Should().Contain("Query inválida");            
+        }
+
+        [Fact(DisplayName = "Deve retornar BadRequest quando efetuado post com command inválido")]
+        public async Task Deve_retornar_bad_request_quando_efetuado_post_com_command_invalido()
+        {
+            await _client.Autenticar();
+
+            var postResponse = await _client.PostAsync(ENDPOINT, _fixture.GerarPostUsuarioInvalido());
+            var postResult = postResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+
+            postResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+            postResult.Should().Contain("Command inválido");
+        }
+
+        [Fact(DisplayName = "Deve retornar BadRequest quando efetuado put com command inválido")]
+        public async Task Deve_retornar_bad_request_quando_efetuado_put_com_command_invalido()
+        {
+            await _client.Autenticar();
+
+            var putResponse = await _client.PutAsync(ENDPOINT, _fixture.GerarPutUsuarioInvalido());
+            var putResult = putResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+
+            putResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+            putResult.Should().Contain("Command inválido");
+        }
+        
+        [Fact(DisplayName = "Deve retornar BadRequest quando efetuado delete com command inválido")]
+        public async Task Deve_retornar_bad_request_quando_efetuado_delete_com_command_invalido()
+        {
+            await _client.Autenticar();
+
+            var deleteResponse = await _client.DeleteAsync(ENDPOINT + 0);
+            var deleteResult = deleteResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+
+            deleteResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+            deleteResult.Should().Contain("Command inválido");
+        }
+
+        [Fact(DisplayName = "Deve retornar BadRequest quando efetuado get all com query inválida")]
+        public async Task Deve_retornar_bad_request_quando_efetuado_get_all_com_query_invalida()
+        {
+            await _client.Autenticar();
+
+            var getResponse = await _client.GetAsync(ENDPOINT + "?pagina=0&tamanho=0");
+            var getResult = getResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+
+            getResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+            getResult.Should().Contain("Query inválida");
         }
     }
 }

@@ -9,7 +9,7 @@ namespace BackEnd.NetCore.Api.TesteIntegracao.Abstractions
 {
     public abstract class WebApplicationTesteIntegracao : IClassFixture<WebApplicationFactory<Startup>>
     {
-        private const string APPSETTINGS = "appsettings.json";
+        private const string APPSETTINGS = "appsettings.Test.json";
 
         protected readonly WebApplicationFactory<Startup> _factory;
         protected readonly HttpClient _client;

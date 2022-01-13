@@ -11,6 +11,7 @@ using BackEnd.NetCore.Api.Models;
 using Microsoft.Extensions.Options;
 using MediatR;
 using BackEnd.NetCore.Usuario.Queries.DataContracts;
+using BackEnd.NetCore.Common.Extensions;
 
 namespace BackEnd.NetCore.Api.Controllers
 {
@@ -46,39 +47,32 @@ namespace BackEnd.NetCore.Api.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<dynamic>> Autenticar([FromForm] AutenticacaoRequest request)
         {
-            try
+            var usuario = await _mediator.Send(new ConsultarUsuarioPorLoginQuery() { Login = request.Nome.ToUpper() });
+            var senhaCriptografada = TripleDes.Encrypt(Secret.GetSecretAsByteArray(), request.Senha);
+
+            if (string.IsNullOrEmpty(usuario?.Senha) || !senhaCriptografada.Equals(usuario.Senha))
+                return BadRequest(new { mensagem = "Usuário ou senha inválidos" });
+
+            var usuarioToken = new UsuarioToken()
             {
-                var usuario = await _mediator.Send(new ConsultarUsuarioPorLoginQuery() { Login = request.Nome.ToUpper() });
-                var senhaCriptografada = TripleDes.Encrypt(Secret.GetSecretAsByteArray(), request.Senha);
+                Id = usuario.Id.ToString(),
+                Nome = usuario.Nome,
+                Login = usuario.Login,
+                Email = usuario.Email,
+                IP = Request.GetRequestIP()
+            };
 
-                if (string.IsNullOrEmpty(usuario?.Senha) || !senhaCriptografada.Equals(usuario.Senha))
-                    return BadRequest(new { mensagem = "Usuário ou senha inválidos" });
+            var accessToken = _tokenService.GerarToken(usuarioToken);
+            var refreshToken = _tokenService.GerarRefreshToken(usuarioToken);
 
-                var usuarioToken = new UsuarioToken()
-                {
-                    Id = usuario.Id.ToString(),
-                    Nome = usuario.Nome,
-                    Login = usuario.Login,
-                    Email = usuario.Email,
-                    IP = GetRequestIP()
-                };
-
-                var accessToken = _tokenService.GerarToken(usuarioToken);
-                var refreshToken = _tokenService.GerarRefreshToken(usuarioToken);
-
-               var token = new TokenResponse()
-               {
-                   AccessToken = accessToken.Token,
-                   ExpiresIn = accessToken.ExpiresIn,
-                   RefreshToken = refreshToken
-               };
-
-                return Ok(token);
-            }
-            catch (Exception ex)
+            var token = new TokenResponse()
             {
-                return BadRequest(ex.Message);
-            }
+                AccessToken = accessToken.Token,
+                ExpiresIn = accessToken.ExpiresIn,
+                RefreshToken = refreshToken
+            };
+
+            return Ok(token);           
         }
 
         [HttpGet]
@@ -102,69 +96,29 @@ namespace BackEnd.NetCore.Api.Controllers
         [AllowAnonymous]
         public ActionResult<dynamic> Atualizar([FromForm] RefreshTokenRequest request)
         {
-            try
+            var usuario = _tokenService.ObterUsuario(request.Token);
+
+            if (!usuario.Nome.ToUpper().Equals(request.Nome.ToUpper()) || !_tokenService.ValidarRefreshToken(request.RefreshToken, usuario))
             {
-                var usuario = _tokenService.ObterUsuario(request.Token);
-
-                if (!usuario.Nome.ToUpper().Equals(request.Nome.ToUpper()) || !_tokenService.ValidarRefreshToken(request.RefreshToken, usuario))
-                {
-                    return BadRequest(new { mensagem = "Usuário ou refreshToken inválidos" });
-                }
-
-                if (_tokenService.RefreshTokenExpirado(request.RefreshToken))
-                {
-                    return BadRequest(new { mensagem = "RefreshToken expirado" });
-                }
-
-                var accessToken = _tokenService.GerarToken(usuario);
-                var refreshToken = _tokenService.GerarRefreshToken(usuario);
-
-                var token = new TokenResponse()
-                {
-                    AccessToken = accessToken.Token,
-                    ExpiresIn = accessToken.ExpiresIn,
-                    RefreshToken = refreshToken
-                };
-
-                return Ok(token);         
+                return BadRequest(new { mensagem = "Usuário ou refreshToken inválidos" });
             }
-            catch (Exception ex)
+
+            if (_tokenService.RefreshTokenExpirado(request.RefreshToken))
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { mensagem = "RefreshToken expirado" });
             }
-        }
 
-        public string GetRequestIP()
-        {
-            string ip = null;
+            var accessToken = _tokenService.GerarToken(usuario);
+            var refreshToken = _tokenService.GerarRefreshToken(usuario);
 
-            if (Request.Headers.ContainsKey("X-Forwarded-For"))
-                ip = Request.Headers["X-Forwarded-For"];
-
-            if (string.IsNullOrWhiteSpace(ip) && Request.HttpContext?.Connection?.RemoteIpAddress != null)
-                ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();
-
-            if (string.IsNullOrWhiteSpace(ip))
-                ip = GetHeaderValueAs<string>("REMOTE_ADDR");
-
-            if (string.IsNullOrWhiteSpace(ip))
-                ip = "0.0.0.0";
-
-            return ip;
-        }
-
-        public T GetHeaderValueAs<T>(string headerName)
-        {
-            StringValues values;
-
-            if (Request.HttpContext?.Request?.Headers?.TryGetValue(headerName, out values) ?? false)
+            var token = new TokenResponse()
             {
-                string rawValues = values.ToString();
+                AccessToken = accessToken.Token,
+                ExpiresIn = accessToken.ExpiresIn,
+                RefreshToken = refreshToken
+            };
 
-                if (!string.IsNullOrWhiteSpace(rawValues))
-                    return (T)Convert.ChangeType(values.ToString(), typeof(T));
-            }
-            return default(T);
-        }
+            return Ok(token);         
+        }       
     }
 }

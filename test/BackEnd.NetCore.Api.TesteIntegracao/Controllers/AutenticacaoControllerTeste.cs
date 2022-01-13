@@ -3,7 +3,6 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using BackEnd.NetCore.Api;
 using BackEnd.NetCore.Common.DataContracts;
 using BackEnd.NetCore.Api.TesteIntegracao.Abstractions;
 using BackEnd.NetCore.Api.TesteIntegracao.Fixtures;
@@ -15,8 +14,8 @@ namespace BackEnd.NetCore.Api.TesteIntegracao.Controllers
 {
     public class AutenticacaoControllerTeste : WebApplicationTesteIntegracao
     {
-        private const string REFRESH_TOKEN_EXPIRADO = "+imBK1WMFdLXiBC0xq4GYuZ7HADinbY9rfYF5NvFdmf1dAh/yjUy2ItkRbSGQtid80HG5gHceiERslV0d1lxkycbAvyzywXmGM+NYgA2CLpvim6jLl9BI6axSj7LKq3wDHqxmdsiprp38+ZcRWNPMp+nDJCxsSVDtY3/am8hSx9DEWcyg2lfauZjeEnWwJfeVARa3Bb5aKjXGET41H0kDw770ldzn2TDLowh9N5TrrzP22wkO7HPoWsUo5niTeCy";
-        private const string TOKEN_EXPIRADO = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJPV05FUiIsIk5vbWUiOiJSYXBoYWVsIiwiRW1haWwiOiJvd25lckBnbWFpbC5jb20iLCJJcEFkZHJlc3MiOiI6OjEiLCJuYmYiOjE2NDE5MTAzNTksImV4cCI6MTY0MTkxNzU1OSwiaWF0IjoxNjQxOTEwMzU5fQ.6wW7fRrLEA7ZngUsbedxp7dWZkqcUwCjw8eugczvULA";
+        private const string REFRESH_TOKEN_EXPIRADO = "+imBK1WMFdLXiBC0xq4GYnFDWAOR9IgnPpVECv5bSp6fexI8gJimdAUmvwjjSZwlBMj5uRTvBVdT0JeJFSbFvM4WWI6Aam7ptL+mkX4+IrIzQYI64gi4usBLePT/K7t9u+Tp+TyBqXlcEU8OluyizP9ZqlduEzHX30POylbIasrDs6bcpvWFSY8+e8M4tRW2";
+        private const string TOKEN_EXPIRADO = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJPV05FUiIsIk5vbWUiOiJPd25lciIsIkVtYWlsIjoib3duZXJAY29tcGFueS5jb20iLCJJcEFkZHJlc3MiOiIwLjAuMC4wIiwibmJmIjoxNjQyMDk4MjIzLCJleHAiOjE2NDIwOTgyMzgsImlhdCI6MTY0MjA5ODIyM30.3bgrRPexUwEvcyKdMbKBQW_1K3jMTmkdgoR_VS38jiQ";
         
         public AutenticacaoControllerTeste(WebApplicationFactory<Startup> factory) : base(factory) 
         { }
@@ -82,12 +81,13 @@ namespace BackEnd.NetCore.Api.TesteIntegracao.Controllers
 
             var post = new Dictionary<string, string>();
             post.Add("username", "OWNER");
-            post.Add("token", token.AccessToken);            
+            post.Add("token", token.AccessToken);
             post.Add("refreshToken", REFRESH_TOKEN_EXPIRADO);
 
             response = await client.PostAsync("/auth/refresh-token/", new FormUrlEncodedContent(post));
-     
+            resultContent = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Contains("RefreshToken expirado", resultContent);
         }
 
         [Fact(DisplayName = "Dado o endpoint 'refresh-token', deve retornar bad request, quando usuário inválido")]
@@ -104,8 +104,9 @@ namespace BackEnd.NetCore.Api.TesteIntegracao.Controllers
             post.Add("refreshToken", token.RefreshToken);
 
             response = await client.PostAsync("/auth/refresh-token/", new FormUrlEncodedContent(post));
-
+            resultContent = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Contains("Usuário ou refreshToken inválidos", resultContent);
         }
 
         [Fact(DisplayName = "Dado o endpoint 'validate', deve retornar 'OK' quando passado um Token válido")]

@@ -38,10 +38,10 @@ namespace BackEnd.NetCore.Api.Controllers
 
                 return Ok(usuario);
             }
-            catch (Exception e)
+            catch (ValidationException e)
             {
-                return BadRequest(e.Message);
-            }            
+                return BadRequest(new ErrorMessage(e));
+            }
         }
 
         [HttpPost]
@@ -73,9 +73,9 @@ namespace BackEnd.NetCore.Api.Controllers
 
                 return Ok(usuarios);
             }
-            catch (Exception e)
+            catch (ValidationException e)
             {
-                return BadRequest(e.Message);
+                return BadRequest(new ErrorMessage(e));
             }
         }
 
