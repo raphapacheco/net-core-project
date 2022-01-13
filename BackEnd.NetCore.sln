@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackEnd.NetCore.Common", "s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackEnd.NetCore.Usuario", "src\BackEnd.NetCore.Usuario\BackEnd.NetCore.Usuario.csproj", "{4E09AC25-9A0A-4898-B9D4-E5F81436A77B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackEnd.NetCore.Usuario.TesteUnitario", "BackEnd.NetCore.Usuario.TesteUnitario\BackEnd.NetCore.Usuario.TesteUnitario.csproj", "{39DE80A2-5B4C-4B6B-80C9-4FCAF849AC8D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackEnd.NetCore.Usuario.TesteUnitario", "test\BackEnd.NetCore.Usuario.TesteUnitario\BackEnd.NetCore.Usuario.TesteUnitario.csproj", "{39DE80A2-5B4C-4B6B-80C9-4FCAF849AC8D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

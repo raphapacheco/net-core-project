@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\BackEnd.NetCore.Usuario\BackEnd.NetCore.Usuario.csproj" />
+    <ProjectReference Include="..\..\src\BackEnd.NetCore.Usuario\BackEnd.NetCore.Usuario.csproj" />
   </ItemGroup>
 
 </Project>
