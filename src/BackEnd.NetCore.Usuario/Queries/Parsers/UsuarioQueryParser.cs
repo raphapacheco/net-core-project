@@ -32,9 +32,9 @@ namespace BackEnd.NetCore.Usuario.Queries.Parsers
         {
             var itens = new List<ConsultarUsuarioQueryResponse>();
 
-            foreach (var entidade in paginationResponse.Items)
+            foreach (var modelo in paginationResponse.Items)
             {
-                itens.Add(ConverterParaResponse(entidade));
+                itens.Add(ConverterParaResponse(modelo));
             }
 
             return new ConsultarPaginadoUsuarioResponse()

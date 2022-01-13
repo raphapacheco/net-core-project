@@ -34,6 +34,7 @@ namespace BackEnd.NetCore.Api.TesteIntegracao.Fixtures
                 Email = response.Email,
                 Senha = "pass321",
                 CPF = response.CPF,
+                CNPJ = response.CNPJ,
                 Celular = response.Celular
             };
 

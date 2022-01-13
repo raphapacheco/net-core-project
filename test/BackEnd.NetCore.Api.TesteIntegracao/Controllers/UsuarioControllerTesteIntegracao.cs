@@ -24,7 +24,7 @@ namespace BackEnd.NetCore.Api.TesteIntegracao.Controllers
         }
 
         [Fact(DisplayName = "Dados os endpoints para Usuario, deve ser possível fazer o CRUD")]
-        public async Task Dados_os_endpoints_Agencia_deve_ser_posível_fazer_o_CRUD_da_entidade()
+        public async Task Dados_os_endpoints_para_usuario_deve_ser_posível_fazer_o_CRUD()
         {
             await _client.Autenticar();
 
@@ -56,18 +56,18 @@ namespace BackEnd.NetCore.Api.TesteIntegracao.Controllers
         {            
             var getResponse = await _client.GetAsync(ENDPOINT + id);
             var getResult = getResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-            var entidade = JsonConvert.DeserializeObject<ConsultarUsuarioQueryResponse>(getResult);
+            var modelo = JsonConvert.DeserializeObject<ConsultarUsuarioQueryResponse>(getResult);
 
-            entidade.Nome.Should().Be("User Test");
+            modelo.Nome.Should().Be("User Test");
         }
 
         private async Task Deve_atualizar_dados_quando_efetuado_put(int id)
         {
             var getResponse = await _client.GetAsync(ENDPOINT + id);
             var getResult = getResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-            var entidade = JsonConvert.DeserializeObject<ConsultarUsuarioQueryResponse>(getResult);
+            var modelo = JsonConvert.DeserializeObject<ConsultarUsuarioQueryResponse>(getResult);
 
-            var putResponse = await _client.PutAsync(ENDPOINT, _fixture.GerarPutUsuario(entidade));
+            var putResponse = await _client.PutAsync(ENDPOINT, _fixture.GerarPutUsuario(modelo));
             var putResult = putResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
 
             putResponse.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -92,6 +92,63 @@ namespace BackEnd.NetCore.Api.TesteIntegracao.Controllers
             resultado.Should().NotBeNull();
             resultado.Pagina.Should().Be(1);
             resultado.Quantidade.Should().Be(2);
+        }
+
+        [Fact(DisplayName = "Deve retornar NotFound quando efetuado get sem registro")]
+        public async Task Deve_retornar_not_found_quando_efetuado_get_sem_registro()
+        {
+            await _client.Autenticar();
+
+            var getResponse = await _client.GetAsync(ENDPOINT + 9999999);
+            var getResult = getResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            var resultado = JsonConvert.DeserializeObject<string>(getResult);
+
+            getResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
+            resultado.Should().Be("Usuário não encontrado");
+        }
+
+        [Fact(DisplayName = "Deve retornar NotFound quando efetuado put sem registro")]
+        public async Task Deve_retornar_not_found_quando_efetuado_put_sem_registro()
+        {
+            await _client.Autenticar();
+
+            var getResponse = await _client.GetAsync(ENDPOINT + 1);
+            var getResult = getResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            var modelo = JsonConvert.DeserializeObject<ConsultarUsuarioQueryResponse>(getResult);
+            modelo.Id = 9999999;
+            
+            var putResponse = await _client.PutAsync(ENDPOINT, _fixture.GerarPutUsuario(modelo));
+            var putResult = putResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            var resultado = JsonConvert.DeserializeObject<string>(putResult);
+
+            putResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
+            resultado.Should().Be("Usuário não encontrado");
+        }
+
+        [Fact(DisplayName = "Deve retornar NotFound quando efetuado delete sem registro")]
+        public async Task Deve_retornar_not_found_quando_efetuado_delete_sem_registro()
+        {
+            await _client.Autenticar();
+
+            var deleteResponse = await _client.DeleteAsync(ENDPOINT + 9999999);            
+            var deleteResult = deleteResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            var resultado = JsonConvert.DeserializeObject<string>(deleteResult);
+
+            deleteResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
+            resultado.Should().Be("Usuário não encontrado");
+        }
+
+        [Fact(DisplayName = "Deve retornar NotFound quando efetuado get all sem registro")]
+        public async Task Deve_retornar_not_found_quando_efetuado_get_all_sem_registros()
+        {
+            await _client.Autenticar();
+
+            var getResponse = await _client.GetAsync(ENDPOINT + "?pagina=999&tamanho=2");
+            var getResult = getResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            var resultado = JsonConvert.DeserializeObject<string>(getResult);
+
+            getResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);           
+            resultado.Should().Be("Nenhum usuário encontrado");
         }
     }
 }

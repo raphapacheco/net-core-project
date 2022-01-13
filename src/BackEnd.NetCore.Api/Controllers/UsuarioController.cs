@@ -68,7 +68,7 @@ namespace BackEnd.NetCore.Api.Controllers
 
                 if (usuarios == null || usuarios.Itens.Count().Equals(0))
                 {
-                    return NotFound("Nenhum Usuário encontrado");
+                    return NotFound("Nenhum usuário encontrado");
                 }
 
                 return Ok(usuarios);
@@ -85,7 +85,14 @@ namespace BackEnd.NetCore.Api.Controllers
         {
             try
             {
-                return Ok(await _mediator.Send(command));
+                var usuario = await _mediator.Send(command);
+
+                if (usuario == null)
+                {
+                    return NotFound("Usuário não encontrado");
+                }
+
+                return Ok(usuario);
             }
             catch (ValidationException e)
             {

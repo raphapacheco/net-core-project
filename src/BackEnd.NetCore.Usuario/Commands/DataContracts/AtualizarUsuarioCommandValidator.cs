@@ -37,7 +37,7 @@ namespace BackEnd.NetCore.Usuario.Commands.DataContracts
                 .WithMessage(ValidationMessage.INVALID);
 
             RuleFor(x => x.CNPJ)
-                .Must(cnpj => CPFValidator.Valido(cnpj))
+                .Must(cnpj => CNPJValidator.Valido(cnpj))
                 .When(x => !string.IsNullOrEmpty(x.CNPJ))
                 .WithMessage(ValidationMessage.INVALID);
         }
