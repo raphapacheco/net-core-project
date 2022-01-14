@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using System.Net.Http;
-using BackEnd.NetCore.Api;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Xunit;

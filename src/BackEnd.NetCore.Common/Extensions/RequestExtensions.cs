@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using System;
+using System.Diagnostics.CodeAnalysis;
+
 namespace BackEnd.NetCore.Common.Extensions
 {
+    [ExcludeFromCodeCoverage]
     public static class RequestExtensions
     {
         private static T GetHeaderValueAs<T>(this HttpRequest request, string headerName)

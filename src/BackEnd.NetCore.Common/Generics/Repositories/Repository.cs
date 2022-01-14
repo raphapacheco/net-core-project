@@ -62,13 +62,6 @@ namespace BackEnd.NetCore.Common.Generics.Repositories
         {
             Context.Database.SetCommandTimeout(commandTimeout);
             var model = await Context.FindAsync<TModelo>(item.Id);
-
-            if (model == null)
-            {
-                Context.Set<TModelo>().Update(item);
-                return item.Id;
-            }
-
             Context.Entry(model).CurrentValues.SetValues(item);
             return item.Id;
         }       
