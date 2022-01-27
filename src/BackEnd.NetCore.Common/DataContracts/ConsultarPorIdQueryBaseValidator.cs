@@ -9,11 +9,11 @@ namespace BackEnd.NetCore.Common.DataContracts
         {
             RuleFor(x => x.Id)
                 .NotEmpty()
-                .WithMessage(ValidationMessage.NOT_EMPTY);
+                .WithMessage(ValidationMessages.NOT_EMPTY);
 
             RuleFor(x => x.Id)
                 .NotNull()
-                .WithMessage(ValidationMessage.NOT_NULL);
+                .WithMessage(ValidationMessages.NOT_NULL);
         }
 
     }

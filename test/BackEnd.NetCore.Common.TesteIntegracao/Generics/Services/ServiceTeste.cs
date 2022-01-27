@@ -1,12 +1,11 @@
 using BackEnd.NetCore.Common.Generics.Repositories;
 using BackEnd.NetCore.Common.Generics.Services;
+using BackEnd.NetCore.Common.Utils;
 using BackEnd.NetCore.Common.ValueObjects;
 using BackEnd.NetCore.Usuario.Commons.Contexts;
 using BackEnd.NetCore.Usuario.Commons.Models;
 using FluentAssertions;
-using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using System;
 using Xunit;
 
@@ -32,14 +31,14 @@ namespace BackEnd.NetCore.Common.TesteIntegracao.Generics.Services
         [Fact(DisplayName = @"Dado o método InserirAsync, quando passado um modelo inválido, deve lançar exceção")]
         public async void Dado_O_Metodo_InserirAsync_Quando_Passado_Um_Modelo_Invalido_Deve_Lancar_Excecao()
         {  
-            var exception = await Assert.ThrowsAsync<ValidationException>(async () => await _servico.InserirAsync(new UsuarioDAO()));
+            var exception = await Assert.ThrowsAsync<ValidationMessage>(async () => await _servico.InserirAsync(new UsuarioDAO()));
             exception.Message.Should().Contain("Modelo inválido");
         }
 
         [Fact(DisplayName = @"Dado o método AtualizarAsync, quando passado um modelo inválido, deve lançar exceção")]
         public async void Dado_O_Metodo_AtualizarAsync_Quando_Passado_Um_Modelo_Invalido_Deve_Lancar_Excecao()
         {
-            var exception = await Assert.ThrowsAsync<ValidationException>(async () => await _servico.AtualizarAsync(new UsuarioDAO()));
+            var exception = await Assert.ThrowsAsync<ValidationMessage>(async () => await _servico.AtualizarAsync(new UsuarioDAO()));
             exception.Message.Should().Contain("Modelo inválido");
         }
 

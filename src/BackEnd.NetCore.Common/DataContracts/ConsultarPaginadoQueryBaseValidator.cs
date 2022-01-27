@@ -9,19 +9,19 @@ namespace BackEnd.NetCore.Common.DataContracts
         {
             RuleFor(request => request.Pagina)
                 .NotNull()
-                .WithMessage(ValidationMessage.NOT_NULL);
+                .WithMessage(ValidationMessages.NOT_NULL);
 
             RuleFor(request => request.Tamanho)
                 .NotNull()
-                .WithMessage(ValidationMessage.NOT_NULL);
+                .WithMessage(ValidationMessages.NOT_NULL);
 
             RuleFor(request => request.Pagina)
                 .NotEmpty()
-                .WithMessage(ValidationMessage.NOT_EMPTY);
+                .WithMessage(ValidationMessages.NOT_EMPTY);
 
             RuleFor(request => request.Tamanho)
                 .NotEmpty()
-                .WithMessage(ValidationMessage.NOT_EMPTY);            
+                .WithMessage(ValidationMessages.NOT_EMPTY);            
         }
     }
 }

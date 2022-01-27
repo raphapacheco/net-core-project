@@ -1,26 +1,47 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using FluentValidation.Results;
+using System;
+using System.Collections.Generic;
 
 namespace BackEnd.NetCore.Common.Utils
 {
-    [ExcludeFromCodeCoverage]
-    public static class ValidationMessage
+    public class ValidationMessage : Exception
     {
-        private const string ENUM_CONVERTION_FAILED = "Não foi possível converter. Valores aceitos: {0}";
-        private const string MAXIMUM_LENGTH = "O tamanho máximo é {0}";
+        private List<Validation> _erros;
+        public IEnumerable<Validation> Erros => _erros;
+        public MensagemFormatada MensagemFormatada => new MensagemFormatada(Message, Erros);
 
-        public const string NOT_EMPTY = "Não pode estar vazio";
-        public const string NOT_NULL = "Não pode ser nulo";
-        public const string REQUIRED = "Obrigatório";
-        public const string INVALID = "Inválido";
-                           
-        public static string EnumConvertionFailed(string acceptedValues)
-        {
-            return string.Format(ENUM_CONVERTION_FAILED, acceptedValues);
-        }
+        public ValidationMessage(string message, IList<ValidationFailure> failures) : base(message)
+        {                        
+            _erros = new List<Validation>();
 
-        public static string MaximumLength(int length)
+            foreach (var failure in failures)
+            {
+                _erros.Add(new Validation(failure));
+            }
+        }        
+    }
+
+    public class Validation
+    {
+        public string Campo { get; set; }
+        public string Menssagem { get; set; }
+
+        public Validation(ValidationFailure failure)
         {
-            return string.Format(MAXIMUM_LENGTH, length);
+            Campo = failure.PropertyName;
+            Menssagem = failure.ErrorMessage;
         }
+    }
+
+    public class MensagemFormatada
+    {
+        public IEnumerable<Validation> Erros { get; }
+        public string Mensagem { get; }
+
+        public MensagemFormatada(string mensagem, IEnumerable<Validation> erros)
+        {
+            Mensagem = mensagem;
+            Erros = erros;
+        }                 
     }
 }

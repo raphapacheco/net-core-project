@@ -1,10 +1,10 @@
 ﻿using BackEnd.NetCore.Common.DataContracts;
 using BackEnd.NetCore.Common.Generics.Services;
+using BackEnd.NetCore.Common.Utils;
 using BackEnd.NetCore.Usuario.Commands.DataContracts;
 using BackEnd.NetCore.Usuario.Commands.Parsers;
 using BackEnd.NetCore.Usuario.Commons.Contexts;
 using BackEnd.NetCore.Usuario.Commons.Models;
-using FluentValidation;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,7 +27,7 @@ namespace BackEnd.NetCore.Usuario.Commands.Handlers
         {
             if (!command.Valido(out var resultadoValidacao))
             {
-                throw new ValidationException("Command inválido", resultadoValidacao.Errors);
+                throw new ValidationMessage("Command inválido", resultadoValidacao.Errors);
             }
 
            var id = await _servico.InserirAsync(UsuarioCommandParser.ConverterParaModelo(command));
@@ -43,7 +43,7 @@ namespace BackEnd.NetCore.Usuario.Commands.Handlers
         {
             if (!command.Valido(out var resultadoValidacao))
             {
-                throw new ValidationException("Command inválido", resultadoValidacao.Errors);
+                throw new ValidationMessage("Command inválido", resultadoValidacao.Errors);
             }
 
             var consulta = await _servico.ConsultarPorIdentificadorAsync(command.Id);
@@ -66,7 +66,7 @@ namespace BackEnd.NetCore.Usuario.Commands.Handlers
         {
             if (!command.Valido(out var resultadoValidacao))
             {
-                throw new ValidationException("Command inválido", resultadoValidacao.Errors);
+                throw new ValidationMessage("Command inválido", resultadoValidacao.Errors);
             }
 
             var consulta = await _servico.ConsultarPorIdentificadorAsync(command.Id);

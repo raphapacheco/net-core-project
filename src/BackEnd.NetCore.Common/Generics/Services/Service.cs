@@ -4,9 +4,9 @@ using System.Linq.Expressions;
 using System;
 using Microsoft.EntityFrameworkCore;
 using BackEnd.NetCore.Common.Generics.Repositories;
-using FluentValidation;
 using BackEnd.NetCore.Common.ValueObjects;
 using BackEnd.NetCore.Common.Models;
+using BackEnd.NetCore.Common.Utils;
 
 namespace BackEnd.NetCore.Common.Generics.Services
 {
@@ -29,7 +29,7 @@ namespace BackEnd.NetCore.Common.Generics.Services
         {
             if (!modelo.Valido(out var resultadoValidacao))
             {
-                throw new ValidationException("Modelo inválido", resultadoValidacao.Errors);
+                throw new ValidationMessage("Modelo inválido", resultadoValidacao.Errors);
             }
 
             await _repositorio.InsertAsync(modelo);
@@ -43,7 +43,7 @@ namespace BackEnd.NetCore.Common.Generics.Services
         {
             if (!modelo.Valido(out var resultadoValidacao))
             {
-                throw new ValidationException("Modelo inválido", resultadoValidacao.Errors);                
+                throw new ValidationMessage("Modelo inválido", resultadoValidacao.Errors);                
             }
 
             await _repositorio.UpdateAsync(modelo);

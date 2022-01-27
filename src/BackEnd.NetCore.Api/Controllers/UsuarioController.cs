@@ -1,7 +1,6 @@
 ﻿using BackEnd.NetCore.Common.Utils;
 using BackEnd.NetCore.Usuario.Commands.DataContracts;
 using BackEnd.NetCore.Usuario.Queries.DataContracts;
-using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -38,9 +37,9 @@ namespace BackEnd.NetCore.Api.Controllers
 
                 return Ok(usuario);
             }
-            catch (ValidationException e)
+            catch (ValidationMessage e)
             {
-                return BadRequest(new ErrorMessage(e));
+                return BadRequest(e.MensagemFormatada);
             }
         }
 
@@ -52,9 +51,9 @@ namespace BackEnd.NetCore.Api.Controllers
             {
                 return Ok(await _mediator.Send(command));
             }
-            catch (ValidationException e)
+            catch (ValidationMessage e)
             {
-                return BadRequest(new ErrorMessage(e));
+                return BadRequest(e.MensagemFormatada);
             }            
         }
 
@@ -73,9 +72,9 @@ namespace BackEnd.NetCore.Api.Controllers
 
                 return Ok(usuarios);
             }
-            catch (ValidationException e)
+            catch (ValidationMessage e)
             {
-                return BadRequest(new ErrorMessage(e));
+                return BadRequest(e.MensagemFormatada);
             }
         }
 
@@ -94,9 +93,9 @@ namespace BackEnd.NetCore.Api.Controllers
 
                 return Ok(usuario);
             }
-            catch (ValidationException e)
+            catch (ValidationMessage e)
             {
-                return BadRequest(new ErrorMessage(e));
+                return BadRequest(e.MensagemFormatada);
             }
         }
 
@@ -115,9 +114,9 @@ namespace BackEnd.NetCore.Api.Controllers
 
                 return Ok(retorno);
             }
-            catch (ValidationException e)
+            catch (ValidationMessage e)
             {
-                return BadRequest(new ErrorMessage(e));
+                return BadRequest(e.MensagemFormatada);
             }
         }
     }

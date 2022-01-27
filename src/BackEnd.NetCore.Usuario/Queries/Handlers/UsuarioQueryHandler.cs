@@ -1,10 +1,10 @@
 ﻿using BackEnd.NetCore.Common.Generics.Repositories;
+using BackEnd.NetCore.Common.Utils;
 using BackEnd.NetCore.Common.ValueObjects;
 using BackEnd.NetCore.Usuario.Commons.Contexts;
 using BackEnd.NetCore.Usuario.Commons.Models;
 using BackEnd.NetCore.Usuario.Queries.DataContracts;
 using BackEnd.NetCore.Usuario.Queries.Parsers;
-using FluentValidation;
 using MediatR;
 using System.Linq;
 using System.Threading;
@@ -28,7 +28,7 @@ namespace BackEnd.NetCore.Usuario.Queries.Handlers
         {
             if (!query.Valido(out var resultadoValidacao))
             {
-                throw new ValidationException("Query inválida", resultadoValidacao.Errors);
+                throw new ValidationMessage("Query inválida", resultadoValidacao.Errors);
             }
 
             var consulta = await _repositorio.GetByIdAsync(query.Id);
@@ -40,7 +40,7 @@ namespace BackEnd.NetCore.Usuario.Queries.Handlers
         {
             if (!query.Valido(out var resultadoValidacao))
             {
-                throw new ValidationException("Query inválida", resultadoValidacao.Errors);
+                throw new ValidationMessage("Query inválida", resultadoValidacao.Errors);
             }
 
             var consulta = await _repositorio.GetByExpressionAsync(x => x.Login.Equals(query.Login.ToUpper()));
@@ -54,7 +54,7 @@ namespace BackEnd.NetCore.Usuario.Queries.Handlers
         {
             if (!query.Valido(out var resultadoValidacao))
             {
-                throw new ValidationException("Query inválida", resultadoValidacao.Errors);
+                throw new ValidationMessage("Query inválida", resultadoValidacao.Errors);
             }
 
             var consulta = await _repositorio.GetAllAsync(new Pagination(query.Pagina, query.Tamanho));
