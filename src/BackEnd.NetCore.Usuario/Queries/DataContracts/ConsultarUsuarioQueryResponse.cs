@@ -14,6 +14,5 @@ namespace BackEnd.NetCore.Usuario.Queries.DataContracts
         public string Celular { get; set; }
         public DateTime? DataCadastro { get; set; }
         public bool? Ativo { get; set; } = true;
-        public bool? Bloqueado { get; set; } = false;
     }
 }

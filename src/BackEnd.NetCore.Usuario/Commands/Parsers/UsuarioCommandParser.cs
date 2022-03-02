@@ -32,6 +32,7 @@ namespace BackEnd.NetCore.Usuario.Commands.Parsers
                 CPF = command.CPF,
                 CNPJ = command.CNPJ,
                 Celular = command.Celular,
+                Ativo = command.Ativo,
             };
         }
     }

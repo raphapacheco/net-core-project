@@ -15,7 +15,6 @@ namespace BackEnd.NetCore.Usuario.Commons.Models
         public string Celular { get; set; }
         public DateTime? DataCadastro { get; set; }
         public bool? Ativo { get; set; } = true;
-        public bool? Bloqueado { get; set; } = false;
 
         public override bool Valido(out ValidationResult resultadoValidacao)
         {

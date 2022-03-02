@@ -23,8 +23,7 @@ namespace BackEnd.NetCore.Usuario.Queries.Parsers
                 CNPJ = usuario.CNPJ,
                 Celular = usuario.Celular,
                 DataCadastro = usuario.DataCadastro,
-                Ativo = usuario.Ativo,
-                Bloqueado = usuario.Bloqueado
+                Ativo = usuario.Ativo
             };
         }       
 

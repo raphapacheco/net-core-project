@@ -40,7 +40,7 @@ namespace BackEnd.NetCore.Api.Controllers
             catch (ValidationMessage e)
             {
                 return BadRequest(e.MensagemFormatada);
-            }
+            }           
         }
 
         [HttpPost]

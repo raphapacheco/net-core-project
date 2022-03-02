@@ -42,9 +42,6 @@ namespace BackEnd.NetCore.Usuario.Common.Maps
 
             builder.Property(x => x.Ativo)
                 .HasColumnName("ativo");
-
-            builder.Property(x => x.Bloqueado)
-                .HasColumnName("bloqueado");
         }
     }
 }

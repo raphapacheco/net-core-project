@@ -14,6 +14,7 @@ namespace BackEnd.NetCore.Usuario.Commands.DataContracts
         public string CPF { get; set; }
         public string CNPJ { get; set; }
         public string Celular { get; set; }
+        public bool Ativo { get; set; } 
 
         public bool Valido(out ValidationResult resultadoValidacao)
         {

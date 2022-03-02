@@ -74,7 +74,7 @@ namespace BackEnd.NetCore.Common.Generics.Repositories
         public async Task<IEnumerable<TModelo>> GetByExpressionAsync(Expression<System.Func<TModelo, bool>> expression, int? commandTimeout)
         {
             Context.Database.SetCommandTimeout(commandTimeout);
-            return await Context.Set<TModelo>().Where(expression).ToListAsync();
+            return await Context.Set<TModelo>().Where(expression).OrderBy(x => x.Id).ToListAsync();
         }          
 
         public Task<PaginationResponse<TModelo>> GetAllAsync(Pagination pagination)
@@ -85,7 +85,7 @@ namespace BackEnd.NetCore.Common.Generics.Repositories
         public async Task<PaginationResponse<TModelo>> GetAllAsync(Pagination pagination, int? commandTimeout)
         {
             Context.Database.SetCommandTimeout(commandTimeout);
-            var resultado = await Context.Set<TModelo>().Skip(pagination.Skip).Take(pagination.Size).ToListAsync();
+            var resultado = await Context.Set<TModelo>().Skip(pagination.Skip).Take(pagination.Size).OrderBy(x => x.Id).ToListAsync();
 
             return new PaginationResponse<TModelo>(resultado, pagination.Page);
         }

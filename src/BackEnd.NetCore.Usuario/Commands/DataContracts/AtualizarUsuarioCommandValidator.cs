@@ -30,6 +30,10 @@ namespace BackEnd.NetCore.Usuario.Commands.DataContracts
             RuleFor(x => x.Celular)
                 .NotNull()
                 .WithMessage(ValidationMessages.NOT_NULL);
+            
+            RuleFor(x => x.Ativo)
+                .NotNull()
+                .WithMessage(ValidationMessages.NOT_NULL);
 
             RuleFor(x => x.CPF)
                 .Must(cpf => CPFValidator.Valido(cpf))
