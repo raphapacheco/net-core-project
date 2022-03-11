@@ -86,9 +86,10 @@ namespace BackEnd.NetCore.Common.Generics.Repositories
         {
             Context.Database.SetCommandTimeout(commandTimeout);
             var resultado = await Context.Set<TModelo>().Skip(pagination.Skip).Take(pagination.Size).OrderBy(x => x.Id).ToListAsync();
+            var count = await Context.Set<TModelo>().CountAsync();            
 
-            return new PaginationResponse<TModelo>(resultado, pagination.Page);
-        }
+            return new PaginationResponse<TModelo>(resultado, count, pagination.Page, pagination.Size);
+        }       
 
         public virtual bool Commit()
         {

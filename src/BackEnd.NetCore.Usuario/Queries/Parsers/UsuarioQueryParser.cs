@@ -39,7 +39,9 @@ namespace BackEnd.NetCore.Usuario.Queries.Parsers
             return new ConsultarPaginadoUsuarioResponse()
             {
                 Pagina = paginationResponse.Page,
-                Itens = itens
+                Itens = itens,
+                Tamanho = paginationResponse.Size,
+                TotalPaginas = paginationResponse.TotalPages
             };
         }        
     }
