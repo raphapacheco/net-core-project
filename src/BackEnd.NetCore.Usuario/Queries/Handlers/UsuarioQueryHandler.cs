@@ -13,8 +13,8 @@ using System.Threading.Tasks;
 namespace BackEnd.NetCore.Usuario.Queries.Handlers
 {
     public class UsuarioQueryHandler :
-        IRequestHandler<ConsultarUsuarioPorIdQuery, ConsultarUsuarioQueryResponse>,
-        IRequestHandler<ConsultarUsuarioPorLoginQuery, ConsultarUsuarioQueryResponse>,        
+        IRequestHandler<ConsultarUsuarioPorIdQuery, ConsultarUsuarioResponse>,
+        IRequestHandler<ConsultarUsuarioPorLoginQuery, ConsultarUsuarioPorLoginResponse>,        
         IRequestHandler<ConsultarPaginadoUsuarioQuery, ConsultarPaginadoUsuarioResponse>        
     {
         protected readonly Repository<UsuarioDAO> _repositorio;
@@ -24,7 +24,7 @@ namespace BackEnd.NetCore.Usuario.Queries.Handlers
             _repositorio = new Repository<UsuarioDAO>(contexto);
         }        
 
-        public async Task<ConsultarUsuarioQueryResponse> Handle(ConsultarUsuarioPorIdQuery query, CancellationToken cancellationToken)
+        public async Task<ConsultarUsuarioResponse> Handle(ConsultarUsuarioPorIdQuery query, CancellationToken cancellationToken)
         {
             if (!query.Valido(out var resultadoValidacao))
             {
@@ -36,7 +36,7 @@ namespace BackEnd.NetCore.Usuario.Queries.Handlers
             return UsuarioQueryParser.ConverterParaResponse(consulta);
         }
 
-        public async Task<ConsultarUsuarioQueryResponse> Handle(ConsultarUsuarioPorLoginQuery query, CancellationToken cancellationToken)
+        public async Task<ConsultarUsuarioPorLoginResponse> Handle(ConsultarUsuarioPorLoginQuery query, CancellationToken cancellationToken)
         {
             if (!query.Valido(out var resultadoValidacao))
             {
@@ -47,7 +47,7 @@ namespace BackEnd.NetCore.Usuario.Queries.Handlers
 
             var usuario = consulta.ToList().FirstOrDefault();
 
-            return UsuarioQueryParser.ConverterParaResponse(usuario);
+            return UsuarioQueryParser.ConverterParaConsultarUsuarioPorLoginResponse(usuario);
         }
 
         public virtual async Task<ConsultarPaginadoUsuarioResponse> Handle(ConsultarPaginadoUsuarioQuery query, CancellationToken cancellationToken)

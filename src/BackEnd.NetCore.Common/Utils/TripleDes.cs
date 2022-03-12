@@ -1,3 +1,5 @@
+using BackEnd.NetCore.Common.DataContracts;
+using Newtonsoft.Json;
 using System;
 using System.Security.Cryptography;
 using System.Text;
@@ -9,6 +11,7 @@ namespace BackEnd.NetCore.Common.Utils
         public static string Encrypt(byte[] key, string info)
         {
             var des = CreateTripleDES(key);
+            des.Mode = CipherMode.ECB;
             var ct = des.CreateEncryptor();
             var input = Encoding.UTF8.GetBytes(info);
             var output = ct.TransformFinalBlock(input, 0, input.Length);
@@ -18,7 +21,8 @@ namespace BackEnd.NetCore.Common.Utils
         public static string Decrypt(byte[] key, string info)
         {
             var des = CreateTripleDES(key);
-            var ct = des.CreateDecryptor();
+            des.Mode = CipherMode.ECB;
+            var ct = des.CreateDecryptor();            
             var input = Convert.FromBase64String(info);
             var output = ct.TransformFinalBlock(input, 0, input.Length);
             return Encoding.UTF8.GetString(output);
@@ -30,10 +34,18 @@ namespace BackEnd.NetCore.Common.Utils
             TripleDES des = new TripleDESCryptoServiceProvider();
             var desKey = md5.ComputeHash(key);
             des.Key = desKey;
-            des.IV = new byte[des.BlockSize / 8];
+            des.IV = new byte[8];
             des.Padding = PaddingMode.PKCS7;
             des.Mode = CipherMode.ECB;
             return des;
+        }
+
+        public static UsuarioAuth DecryptAutenticacaoRequest(byte[] key, AutenticacaoRequest request)        
+        {
+            var userDecrypt = Decrypt(key, request.Usuario);
+            UsuarioAuth usuario = JsonConvert.DeserializeObject<UsuarioAuth>(userDecrypt);
+
+            return usuario;
         }
     }
 }

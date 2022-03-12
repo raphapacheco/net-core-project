@@ -24,7 +24,7 @@ namespace BackEnd.NetCore.Api.TesteIntegracao.Fixtures
             return new StringContent(JsonConvert.SerializeObject(command), Encoding.UTF8, "application/json");
         }
 
-        public StringContent GerarPutUsuario(ConsultarUsuarioQueryResponse response)
+        public StringContent GerarPutUsuario(ConsultarUsuarioResponse response)
         {
             var command = new AtualizarUsuarioCommand()
             {

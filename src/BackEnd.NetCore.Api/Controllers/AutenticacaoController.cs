@@ -47,8 +47,9 @@ namespace BackEnd.NetCore.Api.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<dynamic>> Autenticar([FromForm] AutenticacaoRequest request)
         {
-            var usuario = await _mediator.Send(new ConsultarUsuarioPorLoginQuery() { Login = request.Nome.ToUpper() });
-            var senhaCriptografada = TripleDes.Encrypt(Secret.GetSecretAsByteArray(), request.Senha);
+            var dadosUsuario = TripleDes.DecryptAutenticacaoRequest(Secret.GetFrontendSecretAsByteArray(), request);
+            var usuario = await _mediator.Send(new ConsultarUsuarioPorLoginQuery() { Login = dadosUsuario.Nome.ToUpper() });
+            var senhaCriptografada = TripleDes.Encrypt(Secret.GetSecretAsByteArray(), dadosUsuario.Senha);
 
             if (string.IsNullOrEmpty(usuario?.Senha) || !senhaCriptografada.Equals(usuario.Senha))
                 return BadRequest(new { mensagem = "Usuário ou senha inválidos" });

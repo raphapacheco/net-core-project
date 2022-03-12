@@ -7,12 +7,31 @@ namespace BackEnd.NetCore.Usuario.Queries.Parsers
 {
     internal static class UsuarioQueryParser
     {
-        public static ConsultarUsuarioQueryResponse ConverterParaResponse(UsuarioDAO usuario)
+        public static ConsultarUsuarioResponse ConverterParaResponse(UsuarioDAO usuario)
         {
             if (usuario == null)
                 return null;
 
-            return new ConsultarUsuarioQueryResponse()
+            return new ConsultarUsuarioResponse()
+            {
+                Id = usuario.Id,
+                Nome = usuario.Nome,
+                Login = usuario.Login,
+                Email = usuario.Email,
+                CPF = usuario.CPF,
+                CNPJ = usuario.CNPJ,
+                Celular = usuario.Celular,
+                DataCadastro = usuario.DataCadastro,
+                Ativo = usuario.Ativo
+            };
+        }
+
+        public static ConsultarUsuarioPorLoginResponse ConverterParaConsultarUsuarioPorLoginResponse(UsuarioDAO usuario)
+        {
+            if (usuario == null)
+                return null;
+
+            return new ConsultarUsuarioPorLoginResponse()
             {
                 Id = usuario.Id,
                 Nome = usuario.Nome,
@@ -25,11 +44,11 @@ namespace BackEnd.NetCore.Usuario.Queries.Parsers
                 DataCadastro = usuario.DataCadastro,
                 Ativo = usuario.Ativo
             };
-        }       
+        }
 
         public static ConsultarPaginadoUsuarioResponse ConverterParaConsultarPaginadoResponse(PaginationResponse<UsuarioDAO> paginationResponse)
         {
-            var itens = new List<ConsultarUsuarioQueryResponse>();
+            var itens = new List<ConsultarUsuarioResponse>();
 
             foreach (var modelo in paginationResponse.Items)
             {

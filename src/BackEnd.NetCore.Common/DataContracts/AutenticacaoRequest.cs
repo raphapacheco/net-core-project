@@ -5,12 +5,8 @@ namespace BackEnd.NetCore.Common.DataContracts
 {
     public class AutenticacaoRequest
     {
-        [Required(ErrorMessage = "Informe o usuário")]
-        [BindProperty(Name = "username")]
-        public string Nome { get; set; }
-
-        [Required(ErrorMessage = "Informe a senha")]
-        [BindProperty(Name = "password")]
-        public string Senha { get; set; }
+        [Required(ErrorMessage = "Informe os dados do usuário")]
+        [BindProperty(Name = "user")]
+        public string Usuario { get; set; }        
     }
 }

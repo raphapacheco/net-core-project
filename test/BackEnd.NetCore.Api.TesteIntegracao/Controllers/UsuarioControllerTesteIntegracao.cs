@@ -55,7 +55,7 @@ namespace BackEnd.NetCore.Api.TesteIntegracao.Controllers
         {            
             var getResponse = await _client.GetAsync(ENDPOINT + id);
             var getResult = getResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-            var modelo = JsonConvert.DeserializeObject<ConsultarUsuarioQueryResponse>(getResult);
+            var modelo = JsonConvert.DeserializeObject<ConsultarUsuarioResponse>(getResult);
 
             modelo.Nome.Should().Be("User Test");
         }
@@ -64,7 +64,7 @@ namespace BackEnd.NetCore.Api.TesteIntegracao.Controllers
         {
             var getResponse = await _client.GetAsync(ENDPOINT + id);
             var getResult = getResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-            var modelo = JsonConvert.DeserializeObject<ConsultarUsuarioQueryResponse>(getResult);
+            var modelo = JsonConvert.DeserializeObject<ConsultarUsuarioResponse>(getResult);
 
             var putResponse = await _client.PutAsync(ENDPOINT, _fixture.GerarPutUsuario(modelo));
             var putResult = putResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
@@ -113,7 +113,7 @@ namespace BackEnd.NetCore.Api.TesteIntegracao.Controllers
 
             var getResponse = await _client.GetAsync(ENDPOINT + 1);
             var getResult = getResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-            var modelo = JsonConvert.DeserializeObject<ConsultarUsuarioQueryResponse>(getResult);
+            var modelo = JsonConvert.DeserializeObject<ConsultarUsuarioResponse>(getResult);
             modelo.Id = 9999999;
             
             var putResponse = await _client.PutAsync(ENDPOINT, _fixture.GerarPutUsuario(modelo));

@@ -2,7 +2,7 @@
 
 namespace BackEnd.NetCore.Usuario.Queries.DataContracts
 {
-    public class ConsultarUsuarioPorIdQuery : ConsultarPorIdQueryBase<ConsultarUsuarioQueryResponse>
+    public class ConsultarUsuarioPorIdQuery : ConsultarPorIdQueryBase<ConsultarUsuarioResponse>
     {
     }
 }

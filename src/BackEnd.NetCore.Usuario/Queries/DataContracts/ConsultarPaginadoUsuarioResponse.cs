@@ -2,7 +2,7 @@
 
 namespace BackEnd.NetCore.Usuario.Queries.DataContracts
 {
-    public class ConsultarPaginadoUsuarioResponse: ConsultarPaginadoResponseBase<ConsultarUsuarioQueryResponse>
+    public class ConsultarPaginadoUsuarioResponse: ConsultarPaginadoResponseBase<ConsultarUsuarioResponse>
     {
     }
 }
